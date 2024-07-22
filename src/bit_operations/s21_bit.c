@@ -2,7 +2,7 @@
 
 
 int s21_get_bit(s21_decimal value, int bit_index) {
-    return (value.bits[bit_index/32] & (1 << bit_index % 32) ? 1 : 0);
+    return (value.bits[bit_index/32] & (1 << bit_index % 32)) ? 1 : 0;
 }
 
 void s21_set_bit(s21_decimal *value, int bit_index, int boolean){
