@@ -12,6 +12,12 @@ endif
 SOURCES := $(shell find . -name '*.c')
 OBJECTS := $(SOURCES:.c=.o)
 
+main: $(OBJECTS)
+	$(CC) $(FLAGS) $(OBJECTS) -o main
+	./main
+
+
+
 all: s21_decimal.a clean
 
 s21_decimal.a: $(OBJECTS)
@@ -22,7 +28,7 @@ s21_decimal.a: $(OBJECTS)
 	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) *.dSYM
 
 clean-all: clean
 	rm -f s21_decimal.a
@@ -40,4 +46,4 @@ clang:
 	clang-format -style=Google -i $(SOURCES)
 
 
-.PHONY: all clean clang test gcov_report
+.PHONY: all clean clang test gcov_report main

@@ -1,5 +1,7 @@
 #include "s21_decimal.h"
 
+
+
 int main() {
   s21_decimal value  = {1, 2, 3, 0};
   s21_set_scale(&value, 3);
@@ -8,6 +10,11 @@ int main() {
     printf("%d ", s21_get_bit(value, i));
   }
 
+  s21_decimal* value = s21_create_decimal();
+  s21_pretty_print_bits(value);
+ 
   return 0;
 }
+
+
 

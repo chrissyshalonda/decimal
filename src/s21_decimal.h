@@ -87,15 +87,13 @@ int s21_negate(s21_decimal value, s21_decimal *result);
 // Битовые операции
 //------------------------------------------------------------------------------
 
-void s21_set_bit(s21_decimal *value, int bit_index, int boolean);
+int s21_set_bit(s21_decimal *value, int bit_index);
+int s21_reset_bit(s21_decimal *value, int bit_index);
+int s21_inverse_bit(s21_decimal *value, int bit_index);
 int s21_get_bit(s21_decimal value, int bit_index);
+
 void s21_print_bits(s21_decimal value);
-
-void s21_set_sign(s21_decimal *value, int sign);
-int s21_get_sign(s21_decimal value);
-
-int s21_get_scale(s21_decimal value);
-void s21_set_scale(s21_decimal *value, int scale);
+void s21_pretty_print_bits(s21_decimal value);
 
 //------------------------------------------------------------------------------
 // Общие функции
