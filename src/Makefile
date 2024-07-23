@@ -13,8 +13,8 @@ SOURCES := $(shell find . -name '*.c')
 OBJECTS := $(SOURCES:.c=.o)
 
 main: $(OBJECTS)
-	$(CC) $(FLAGS) $(OBJECTS) -o main
-	./main
+	$(CC) $(FLAGS) $(OBJECTS) -o main.out
+	./main.out
 
 
 
@@ -28,7 +28,9 @@ s21_decimal.a: $(OBJECTS)
 	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) *.dSYM
+	rm -f $(OBJECTS) 
+	rm -rf *.dSYM
+	rm -f main.out
 
 clean-all: clean
 	rm -f s21_decimal.a

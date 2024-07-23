@@ -95,6 +95,12 @@ int s21_get_bit(s21_decimal value, int bit_index);
 void s21_print_bits(s21_decimal value);
 void s21_pretty_print_bits(s21_decimal value);
 
+int s21_set_scale(s21_decimal *value, int scale);
+int s21_get_scale(s21_decimal value);
+
+void s21_set_sign(s21_decimal *value, int sign);
+int s21_get_sign(s21_decimal value);
+
 //------------------------------------------------------------------------------
 // Общие функции
 //------------------------------------------------------------------------------
