@@ -1,17 +1,16 @@
 #ifndef S21_BIG_DECIMAL_H
 #define S21_BIG_DECIMAL_H
 
-
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-
+#include "s21_decimal.h"
 //------------------------------------------------------------------------------
 // Структуры
 //------------------------------------------------------------------------------
 
-typedef struct {
+typedef struct s21_big_decimal{
     int bits[8];
 } s21_big_decimal;
 

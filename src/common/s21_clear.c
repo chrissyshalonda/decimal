@@ -7,7 +7,7 @@ void s21_clear_decimal(s21_decimal* value) {
   value->bits[3] = 0;
 }
 
-void s21_big_clear_decimal(s21_big_decimal* value) {
+s21_big_decimal s21_big_clear_decimal(s21_big_decimal value) {
   value->bits[0] = 0;
   value->bits[1] = 0;
   value->bits[2] = 0;

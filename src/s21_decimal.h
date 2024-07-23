@@ -7,15 +7,24 @@
 #include <stdbool.h>
 #include "s21_big_decimal.h"
 
+#define POSITIVE_SIGN 0
+#define NEGATIVE_SIGN 1
+
 //------------------------------------------------------------------------------
 // Структуры
 //------------------------------------------------------------------------------
 
-typedef struct {
+typedef struct s21_decimal{
     int bits[4];
 } s21_decimal;
 
-
+typedef enum ERRORS {
+    OK = 0,
+    TOO_BIG = 1,
+    TOO_SMALL = 2,
+    ZERO_DIVISION = 3,
+    UNEXEPTED_ERROR = 4
+} ERRORS;
 
 //------------------------------------------------------------------------------
 // Арифметические операторы
