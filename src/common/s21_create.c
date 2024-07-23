@@ -6,6 +6,7 @@ s21_decimal* s21_create_decimal() {
 }
 
 s21_big_decimal* s21_big_create_decimal() {
-  s21_big_decimal* result = (s21_big_decimal*)calloc(1, sizeof(s21_big_decimal));
+  s21_big_decimal* result =
+      (s21_big_decimal*)calloc(1, sizeof(s21_big_decimal));
   return result;
 }

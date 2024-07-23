@@ -12,7 +12,7 @@ endif
 SOURCES := $(shell find . -name '*.c')
 OBJECTS := $(SOURCES:.c=.o)
 
-main: $(OBJECTS)
+main: clang $(OBJECTS)
 	$(CC) $(FLAGS) $(OBJECTS) -o main.out
 	./main.out
 

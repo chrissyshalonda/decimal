@@ -113,6 +113,7 @@ int s21_get_sign(s21_decimal value);
 s21_decimal* s21_create_decimal();
 void s21_free_decimal(s21_decimal* value);
 void s21_clear_decimal(s21_decimal* value);
+void s21_left_shift_decimal(s21_decimal* value, int shift);
 
 
 

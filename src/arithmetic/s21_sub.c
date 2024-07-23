@@ -1,6 +1,6 @@
 #include "../s21_decimal.h"
 
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-    // TODO: s21_sub
-    return 0;
+  // TODO: s21_sub
+  return 0;
 }
