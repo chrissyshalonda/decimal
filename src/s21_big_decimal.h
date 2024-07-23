@@ -1,31 +1,29 @@
-#ifndef S21_DECIMAL_H
-#define S21_DECIMAL_H
+#ifndef S21_BIG_DECIMAL_H
+#define S21_BIG_DECIMAL_H
+
 
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "s21_big_decimal.h"
 
 //------------------------------------------------------------------------------
 // Структуры
 //------------------------------------------------------------------------------
 
 typedef struct {
-    int bits[4];
-} s21_decimal;
-
-
+    int bits[8];
+} s21_big_decimal;
 
 //------------------------------------------------------------------------------
 // Арифметические операторы
 //------------------------------------------------------------------------------
 
-int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
-int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
-int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
-int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
-int s21_mod(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+int s21_big_add(s21_big_decimal value_1, s21_big_decimal value_2, s21_big_decimal *result);
+int s21_big_sub(s21_big_decimal value_1, s21_big_decimal value_2, s21_big_decimal *result);
+int s21_big_mul(s21_big_decimal value_1, s21_big_decimal value_2, s21_big_decimal *result);
+int s21_big_div(s21_big_decimal value_1, s21_big_decimal value_2, s21_big_decimal *result);
+int s21_big_mod(s21_big_decimal value_1, s21_big_decimal value_2, s21_big_decimal *result);
 
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
@@ -40,12 +38,12 @@ int s21_mod(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 // Операторы сравнение
 //------------------------------------------------------------------------------
 
-int s21_is_less(s21_decimal value_1, s21_decimal value_2);
-int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2);
-int s21_is_greater(s21_decimal value_1, s21_decimal value_2);
-int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2);
-int s21_is_equal(s21_decimal value_1, s21_decimal value_2);
-int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2);
+int s21_big_is_less(s21_big_decimal value_1, s21_big_decimal value_2);
+int s21_big_is_less_or_equal(s21_big_decimal value_1, s21_big_decimal value_2);
+int s21_big_is_greater(s21_big_decimal value_1, s21_big_decimal value_2);
+int s21_big_is_greater_or_equal(s21_big_decimal value_1, s21_big_decimal value_2);
+int s21_big_is_equal(s21_big_decimal value_1, s21_big_decimal value_2);
+int s21_big_is_not_equal(s21_big_decimal value_1, s21_big_decimal value_2);
 
 
 //------------------------------------------------------------------------------
@@ -59,10 +57,10 @@ int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2);
 // Преобразователи
 //------------------------------------------------------------------------------
 
-int s21_from_int_to_decimal(int src, s21_decimal *dst);
-int s21_from_float_to_decimal(float src, s21_decimal *dst);
-int s21_from_decimal_to_int(s21_decimal src, int *dst);
-int s21_from_decimal_to_float(s21_decimal src, float *dst);
+int s21_big_from_int_to_decimal(int src, s21_big_decimal *dst);
+int s21_big_from_float_to_decimal(float src, s21_big_decimal *dst);
+int s21_big_from_decimal_to_int(s21_big_decimal src, int *dst);
+int s21_big_from_decimal_to_float(s21_big_decimal src, float *dst);
 
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
@@ -75,10 +73,10 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst);
 // Другие функции
 //------------------------------------------------------------------------------
 
-int s21_floor(s21_decimal value, s21_decimal *result);
-int s21_round(s21_decimal value, s21_decimal *result);
-int s21_truncate(s21_decimal value, s21_decimal *result);
-int s21_negate(s21_decimal value, s21_decimal *result);
+int s21_big_floor(s21_big_decimal value, s21_big_decimal *result);
+int s21_big_round(s21_big_decimal value, s21_big_decimal *result);
+int s21_big_truncate(s21_big_decimal value, s21_big_decimal *result);
+int s21_big_negate(s21_big_decimal value, s21_big_decimal *result);
 
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
@@ -90,19 +88,19 @@ int s21_negate(s21_decimal value, s21_decimal *result);
 // Битовые операции
 //------------------------------------------------------------------------------
 
-int s21_set_bit(s21_decimal *value, int bit_index);
-int s21_reset_bit(s21_decimal *value, int bit_index);
-int s21_inverse_bit(s21_decimal *value, int bit_index);
-int s21_get_bit(s21_decimal value, int bit_index);
+int s21_big_set_bit(s21_big_decimal *value, int bit_index);
+int s21_big_reset_bit(s21_big_decimal *value, int bit_index);
+int s21_big_inverse_bit(s21_big_decimal *value, int bit_index);
+int s21_big_get_bit(s21_big_decimal value, int bit_index);
 
-void s21_print_bits(s21_decimal value);
-void s21_pretty_print_bits(s21_decimal value);
+void s21_big_print_bits(s21_big_decimal value);
+void s21_big_pretty_print_bits(s21_big_decimal value);
 
-int s21_set_scale(s21_decimal *value, int scale);
-int s21_get_scale(s21_decimal value);
+int s21_big_set_scale(s21_big_decimal *value, int scale);
+int s21_big_get_scale(s21_big_decimal value);
 
-void s21_set_sign(s21_decimal *value, int sign);
-int s21_get_sign(s21_decimal value);
+void s21_big_set_sign(s21_big_decimal *value, int sign);
+int s21_big_get_sign(s21_big_decimal value);
 
 
 
@@ -110,9 +108,9 @@ int s21_get_sign(s21_decimal value);
 // Общие функции
 //------------------------------------------------------------------------------
 
-s21_decimal* s21_create_decimal();
-void s21_free_decimal(s21_decimal* value);
-void s21_clear_decimal(s21_decimal* value);
+s21_big_decimal* s21_big_create_decimal();
+void s21_big_free_decimal(s21_big_decimal* value);
+void s21_big_clear_decimal(s21_big_decimal* value);
 
 
 
