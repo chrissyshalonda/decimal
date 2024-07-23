@@ -27,6 +27,8 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_mod(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
+
+
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
@@ -114,6 +116,7 @@ s21_decimal* s21_create_decimal();
 void s21_free_decimal(s21_decimal* value);
 void s21_clear_decimal(s21_decimal* value);
 void s21_left_shift_decimal(s21_decimal* value, int shift);
+void s21_copy_decimal(s21_decimal* src, s21_decimal* dst);
 
 
 

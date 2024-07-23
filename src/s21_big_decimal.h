@@ -111,6 +111,8 @@ int s21_big_get_sign(s21_big_decimal value);
 s21_big_decimal* s21_big_create_decimal();
 void s21_big_free_decimal(s21_big_decimal* value);
 void s21_big_clear_decimal(s21_big_decimal* value);
+void s21_big_left_shift_decimal(s21_big_decimal* value, int shift);
+void s21_big_copy_decimal(s21_big_decimal* src, s21_big_decimal* dst);
 
 
 
