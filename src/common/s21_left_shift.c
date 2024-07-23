@@ -17,7 +17,6 @@ void s21_left_shift_decimal(s21_decimal* value, int shift) {
   }
 }
 
-
 //----------------------------------BIG_DECIMAL-----------------------------------
 
 void s21_big_left_shift_decimal(s21_big_decimal* value, int shift) {

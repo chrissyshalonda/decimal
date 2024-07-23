@@ -12,12 +12,13 @@
 #define BG_MAGENTA "\033[45m"
 #define BG_WHITE "\033[47m"
 
-int getRow(int bit_index) { return bit_index / 32; }
+int s21_get_row(int bit_index) { return bit_index / 32; }
 
-int getCol(int bit_index) { return bit_index % 32; }
+int s21_get_col(int bit_index) { return bit_index % 32; }
 
 int s21_get_bit(s21_decimal value, int bit_index) {
-  return (value.bits[getRow(bit_index)] & (1 << getCol(bit_index))) != 0;
+  return (value.bits[s21_get_row(bit_index)] & (1 << s21_get_col(bit_index))) !=
+         0;
 }
 
 void s21_print_bits(s21_decimal value) {
@@ -72,19 +73,22 @@ void s21_pretty_print_bits(s21_decimal value) {
 
 int s21_set_bit(s21_decimal *value, int bit_index) {
   bool result = bit_index >= 0 && bit_index < 128;
-  if (result) value->bits[getRow(bit_index)] |= (1 << getCol(bit_index));
+  if (result)
+    value->bits[s21_get_row(bit_index)] |= (1 << s21_get_col(bit_index));
   return !result;
 }
 
 int s21_reset_bit(s21_decimal *value, int bit_index) {
   bool result = bit_index >= 0 && bit_index < 128;
-  if (result) value->bits[getRow(bit_index)] &= ~(1 << getCol(bit_index));
+  if (result)
+    value->bits[s21_get_row(bit_index)] &= ~(1 << s21_get_col(bit_index));
   return !result;
 }
 
 int s21_inverse_bit(s21_decimal *value, int bit_index) {
   bool result = bit_index >= 0 && bit_index < 128;
-  if (result) value->bits[getRow(bit_index)] ^= (1 << getCol(bit_index));
+  if (result)
+    value->bits[s21_get_row(bit_index)] ^= (1 << s21_get_col(bit_index));
   return !result;
 }
 
@@ -92,24 +96,28 @@ int s21_inverse_bit(s21_decimal *value, int bit_index) {
 
 int s21_big_set_bit(s21_big_decimal *value, int bit_index) {
   bool result = bit_index >= 0 && bit_index < 256;
-  if (result) value->bits[getRow(bit_index)] |= (1 << getCol(bit_index));
+  if (result)
+    value->bits[s21_get_row(bit_index)] |= (1 << s21_get_col(bit_index));
   return !result;
 }
 
 int s21_big_reset_bit(s21_big_decimal *value, int bit_index) {
   bool result = bit_index >= 0 && bit_index < 256;
-  if (result) value->bits[getRow(bit_index)] &= ~(1 << getCol(bit_index));
+  if (result)
+    value->bits[s21_get_row(bit_index)] &= ~(1 << s21_get_col(bit_index));
   return !result;
 }
 
 int s21_big_inverse_bit(s21_big_decimal *value, int bit_index) {
   bool result = bit_index >= 0 && bit_index < 256;
-  if (result) value->bits[getRow(bit_index)] ^= (1 << getCol(bit_index));
+  if (result)
+    value->bits[s21_get_row(bit_index)] ^= (1 << s21_get_col(bit_index));
   return !result;
 }
 
 int s21_big_get_bit(s21_big_decimal value, int bit_index) {
-  return (value.bits[getRow(bit_index)] & (1 << getCol(bit_index))) != 0;
+  return (value.bits[s21_get_row(bit_index)] & (1 << s21_get_col(bit_index))) !=
+         0;
 }
 
 void s21_big_print_bits(s21_big_decimal value) {

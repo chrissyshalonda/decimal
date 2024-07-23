@@ -27,7 +27,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_mod(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
-
+int s21_base_add(const s21_decimal* value_1, const s21_decimal* value_2, s21_decimal* result);
 
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
@@ -91,6 +91,8 @@ int s21_negate(s21_decimal value, s21_decimal *result);
 //------------------------------------------------------------------------------
 // Битовые операции
 //------------------------------------------------------------------------------
+int s21_get_row(int bit_index);
+int s21_get_col(int bit_index);
 
 int s21_set_bit(s21_decimal *value, int bit_index);
 int s21_reset_bit(s21_decimal *value, int bit_index);
