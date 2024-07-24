@@ -46,6 +46,8 @@ gcov_report: clang test.out
 
 clang:
 	clang-format -style=Google -i $(SOURCES)
+	clang-format -style=Google -i *.h
+
 
 
 .PHONY: all clean clang test gcov_report main

@@ -136,7 +136,7 @@ void s21_big_pretty_print_bits(s21_big_decimal value) {
 
   for (int i = 7; i >= 0; i--) {
     printf(YELLOW "\n\n        %d" RESET, i * 32 + 31);
-    for (int j = 0; j <= (i == 3 ? 58 : 59); j++) printf(" ");
+    for (int j = 0; j <= (i >= 3 ? 58 : 59); j++) printf(" ");
     printf(YELLOW "%d\n" RESET, i * 32);
     printf("bit[%d]: ", i);
     for (int j = 31; j >= 0; j--) {

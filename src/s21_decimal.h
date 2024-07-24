@@ -1,10 +1,11 @@
 #ifndef S21_DECIMAL_H
 #define S21_DECIMAL_H
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "s21_big_decimal.h"
 
 //------------------------------------------------------------------------------
@@ -12,10 +13,8 @@
 //------------------------------------------------------------------------------
 
 typedef struct {
-    int bits[4];
+  int bits[4];
 } s21_decimal;
-
-
 
 //------------------------------------------------------------------------------
 // Арифметические операторы
@@ -27,8 +26,10 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_mod(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
-int s21_base_add(const s21_decimal* value_1, const s21_decimal* value_2, s21_decimal* result);
-
+int s21_base_add(const s21_decimal *value_1, const s21_decimal *value_2,
+                 s21_decimal *result);
+int s21_base_sub(const s21_decimal *value_1, const s21_decimal *value_2,
+                 s21_decimal *result);
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
@@ -36,7 +37,6 @@ int s21_base_add(const s21_decimal* value_1, const s21_decimal* value_2, s21_dec
 //      2 - число слишком мало или равно отрицательной бесконечности
 //      3 - деление на 0
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 // Операторы сравнение
@@ -49,13 +49,11 @@ int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2);
 int s21_is_equal(s21_decimal value_1, s21_decimal value_2);
 int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2);
 
-
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
 //      1 - число слишком велико или равно бесконечности
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 // Преобразователи
@@ -66,12 +64,13 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst);
 int s21_from_decimal_to_int(s21_decimal src, int *dst);
 int s21_from_decimal_to_float(s21_decimal src, float *dst);
 
+void s21_from_decimal_to_big(s21_decimal src, s21_big_decimal *dst);
+
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
 //      1 - ошибка конвертации
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 // Другие функции
@@ -108,18 +107,14 @@ int s21_get_scale(s21_decimal value);
 void s21_set_sign(s21_decimal *value, int sign);
 int s21_get_sign(s21_decimal value);
 
-
-
 //------------------------------------------------------------------------------
 // Общие функции
 //------------------------------------------------------------------------------
 
-s21_decimal* s21_create_decimal();
-void s21_free_decimal(s21_decimal* value);
-void s21_clear_decimal(s21_decimal* value);
-void s21_left_shift_decimal(s21_decimal* value, int shift);
-void s21_copy_decimal(s21_decimal* src, s21_decimal* dst);
-
-
+s21_decimal *s21_create_decimal();
+void s21_free_decimal(s21_decimal *value);
+void s21_clear_decimal(s21_decimal *value);
+void s21_left_shift_decimal(s21_decimal *value, int shift);
+void s21_copy_decimal(s21_decimal src, s21_decimal *dst);
 
 #endif
