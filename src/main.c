@@ -2,14 +2,24 @@
 
 int main() {
   s21_decimal* a = s21_create_decimal();
+  s21_decimal* b = s21_create_decimal();
+  s21_decimal* c = s21_create_decimal();
 
-  s21_set_sign(a, 1);
-  s21_set_scale(a, 00);
+  a->bits[0] = 3;
+  b->bits[0] = 10;
 
-  a->bits[0] = 5;
-  s21_base_mul(*a, *a, a);
-  s21_pretty_print_bits(*a);
+  s21_print_bits(*a);
+  printf("\n");
+  s21_print_bits(*b);
+  printf("\n");
+  s21_base_mul(*a, *b, c);
+
+  s21_print_bits(*c);
+  printf("\n");
+
   s21_free_decimal(a);
+  s21_free_decimal(b);
+  s21_free_decimal(c);
 
   return 0;
 }

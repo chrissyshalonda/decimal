@@ -9,6 +9,10 @@
 #include "s21_big_decimal.h"
 #include "tests/test.h"
 
+//------------------------------------------------------------------------------
+// DEFINES
+//------------------------------------------------------------------------------
+
 #define RESET "\033[0m"
 #define RED "\033[31m"
 #define GREEN "\033[32m"
@@ -20,6 +24,11 @@
 #define BG_BLUE "\033[44m"
 #define BG_MAGENTA "\033[45m"
 #define BG_WHITE "\033[47m"
+
+#define OK 0
+#define INFINITY 1
+#define NEG_INFINITY 2
+#define DIVIDE_BY_ZERO 3
 
 //------------------------------------------------------------------------------
 // Структуры

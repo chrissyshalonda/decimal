@@ -8,7 +8,6 @@ START_TEST(test_s21_from_decimal_to_big) {
   src.bits[0] = 69;
   s21_from_decimal_to_big(src, &dst);
 
-  
   ck_assert_int_eq(s21_big_get_scale(dst), 20);
   ck_assert_int_eq(s21_big_get_sign(dst), 1);
   ck_assert_int_eq(dst.bits[0], 69);
