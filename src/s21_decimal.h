@@ -7,6 +7,19 @@
 #include <stdlib.h>
 
 #include "s21_big_decimal.h"
+#include "tests/test.h"
+
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define MAGENTA "\033[35m"
+#define BG_RED "\033[41m"
+#define BG_GREEN "\033[42m"
+#define BG_BLUE "\033[44m"
+#define BG_MAGENTA "\033[45m"
+#define BG_WHITE "\033[47m"
 
 //------------------------------------------------------------------------------
 // Структуры
@@ -30,6 +43,7 @@ int s21_base_add(const s21_decimal *value_1, const s21_decimal *value_2,
                  s21_decimal *result);
 int s21_base_sub(const s21_decimal *value_1, const s21_decimal *value_2,
                  s21_decimal *result);
+int s21_base_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
@@ -114,7 +128,7 @@ int s21_get_sign(s21_decimal value);
 s21_decimal *s21_create_decimal();
 void s21_free_decimal(s21_decimal *value);
 void s21_clear_decimal(s21_decimal *value);
-void s21_left_shift_decimal(s21_decimal *value, int shift);
+void s21_left_shift_decimal(s21_decimal src, s21_decimal *dst, int shift);
 void s21_copy_decimal(s21_decimal src, s21_decimal *dst);
 
 #endif

@@ -1,17 +1,5 @@
 #include "../s21_decimal.h"
 
-#define RESET "\033[0m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define YELLOW "\033[33m"
-#define BLUE "\033[34m"
-#define MAGENTA "\033[35m"
-#define BG_RED "\033[41m"
-#define BG_GREEN "\033[42m"
-#define BG_BLUE "\033[44m"
-#define BG_MAGENTA "\033[45m"
-#define BG_WHITE "\033[47m"
-
 int s21_get_row(int bit_index) { return bit_index / 32; }
 
 int s21_get_col(int bit_index) { return bit_index % 32; }

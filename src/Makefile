@@ -2,20 +2,32 @@ CC = gcc
 FLAGS = -g -Wall -Wextra -Wall -std=c11 
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage --coverage
 
+DEBUG = 0
+
+
+
 OS = $(shell uname)
 ifeq ($(OS), Linux)
 	CHECK_FLAGS = -lcheck -pthread -lrt -lm -lsubunit
 else
-	CHECK_FLAGS = -lcheck
+	CHECK_FLAGS = -lcheck -I tests -L tests
 endif
 
-SOURCES := $(shell find . -name '*.c')
+ENTRY_POINTS := $(shell grep -r -l  "int main" --exclude Makefile)
+ENTRY_POINTS_OBJ := $(ENTRY_POINTS:.c=.o)
+SOURCES := $(filter-out $(ENTRY_POINTS), $(shell find . -name '*.c' ! -path "./tests/*"))
 OBJECTS := $(SOURCES:.c=.o)
 
-main: clang $(OBJECTS)
-	$(CC) $(FLAGS) $(OBJECTS) -o main.out
-	./main.out
+TEST_SOURCES := $(shell find ./tests -name '*.c')
+TEST_OBJECTS := $(TEST_SOURCES:.c=.o)
 
+
+
+
+
+main: clang $(OBJECTS)
+	$(CC) $(FLAGS) $(OBJECTS) main.c -o main.out
+	./main.out
 
 
 all: s21_decimal.a clean
@@ -27,10 +39,18 @@ s21_decimal.a: $(OBJECTS)
 %.o: %.c
 	$(CC) $(FLAGS) -c $< -o $@
 
+
+test: s21_decimal.a $(TEST_OBJECTS)
+	$(CC) $(FLAGS) s21_decimal.a $(TEST_OBJECTS)  -o test.out $(CHECK_FLAGS) 
+
+	./test.out
+
 clean:
 	rm -f $(OBJECTS) 
+	rm -f $(TEST_OBJECTS)
+	rm -f $(ENTRY_POINTS_OBJ)
 	rm -rf *.dSYM
-	rm -f main.out
+	rm -f main.out test.out
 
 clean-all: clean
 	rm -f s21_decimal.a
@@ -45,7 +65,7 @@ gcov_report: clang test.out
 
 
 clang:
-	clang-format -style=Google -i $(SOURCES)
+	clang-format -style=Google -i $(SOURCES) $(TEST_SOURCES) $(ENTRY_POINTS)
 	clang-format -style=Google -i *.h
 
 
