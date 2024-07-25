@@ -49,8 +49,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_mod(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 int s21_base_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
-int s21_base_sub(const s21_decimal *value_1, const s21_decimal *value_2,
-                 s21_decimal *result);
+int s21_base_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_base_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:

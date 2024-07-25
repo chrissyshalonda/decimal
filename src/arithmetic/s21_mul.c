@@ -18,10 +18,6 @@ int s21_base_mul(s21_decimal value_1, s21_decimal value_2,
     if (s21_get_bit(value_2, i)) {
       s21_clear_decimal(result);
       s21_left_shift_decimal(value_1, shift_temp, i);
-      printf("shift temp:\n");
-      s21_print_bits(*shift_temp);
-      printf("temp:\n");
-      s21_print_bits(*temp);
       s21_base_add(*shift_temp, *temp, result);
       s21_copy_decimal(*result, temp);
     }

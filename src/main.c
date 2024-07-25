@@ -11,15 +11,13 @@ int main() {
   s21_set_sign(b, 0);
   s21_set_scale(b, 0);
 
-  a->bits[0] = 5;
-  b->bits[0] = 5;
-
-  s21_pretty_print_bits(*a);
-  s21_pretty_print_bits(*b);
+  a->bits[0] = -45;
+  b->bits[0] = -3;
 
   s21_base_mul(*a, *b, result);
-
-  s21_pretty_print_bits(*result);
+  printf("a: %d\n", a->bits[0]);
+  printf("b: %d\n", b->bits[0]);
+  printf("result: %d\n", result->bits[0]);
 
   // s21_negate(*a, a);
   // s21_from_decimal_to_big(*a, b);

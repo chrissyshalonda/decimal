@@ -5,11 +5,11 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   return 0;
 }
 
-int s21_base_sub(const s21_decimal* value_1, const s21_decimal* value_2,
+int s21_base_sub(s21_decimal value_1, s21_decimal value_2,
                  s21_decimal* result) {
   s21_decimal* temp = s21_create_decimal();
-  s21_negate(*value_2, temp);
-  s21_base_add(value_1, temp, result);
+  s21_negate(value_2, temp);
+  s21_base_add(value_1, *temp, result);
   s21_free_decimal(temp);
   return 0;
 }
