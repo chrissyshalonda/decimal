@@ -24,6 +24,7 @@ int s21_base_mul(s21_decimal value_1, s21_decimal value_2,
   }
 
   if (is_negative) s21_negate(*result, result);
+  s21_set_scale(result, s21_get_scale(value_1) + s21_get_scale(value_2));
   s21_free_decimal(shift_temp);
   s21_free_decimal(temp);
 
