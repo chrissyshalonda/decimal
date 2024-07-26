@@ -31,14 +31,17 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
 
 int s21_add_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result){
+    s21_decimal result_f = value_1;
     s21_decimal tmp = value_2;
 
-    while(!s21_equal_zero(tmp)){
+    while(s21_equal_zero(tmp)){
         s21_decimal overflow = s21_binary_and(value_1, tmp);
         overflow = s21_binary_shift_left(overflow);
-        *result = s21_binary_xor(value_1, tmp);
+        result_f = s21_binary_xor(value_1, tmp);
         tmp = overflow;
     }
+
+    *result = result_f;
     return 0;
 }
 
@@ -48,7 +51,7 @@ int s21_equal_zero(s21_decimal value){
 
 s21_decimal s21_binary_and(s21_decimal result, s21_decimal tmp){
     s21_decimal output = s21_clear_decimal();
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 3; i++){
         output.bits[i] = result.bits[i] & tmp.bits[i];
     }
     return output;
@@ -73,12 +76,12 @@ s21_decimal s21_binary_shift_left(s21_decimal value){
     int second = s21_get_bit(value, 63);
     unsigned int result_second = value.bits[0];
     result_second = result_second << 1;
-    result.bits[0] = result_second;
+    result.bits[1] = result_second;
 
     int third = s21_get_bit(value, 95);
     unsigned int result_third = value.bits[0];
     result_third = result_third << 1;
-    result.bits[0] = result_third;
+    result.bits[2] = result_third;
 
     unsigned int result_four = value.bits[3];
     result_four = result_four << 1;
@@ -87,9 +90,17 @@ s21_decimal s21_binary_shift_left(s21_decimal value){
     if(first) s21_set_bit(&result, 32);
     if(second) s21_set_bit(&result, 64);
     if(third) s21_set_bit(&result, 96);
+
+    return result;
 }
 
+// 1 1
+//   1
 
+// 1 action
+// overflow = 0, 0, 0, 1 
+// 
+//
 
 
 

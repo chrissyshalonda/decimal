@@ -1,5 +1,5 @@
 CC = gcc
-FLAGS = -g -Wall -Wextra -Wall -std=c11 
+FLAGS = -g -std=c11 #-Wall -Wextra -Wall
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage --coverage
 
 OS = $(shell uname)
