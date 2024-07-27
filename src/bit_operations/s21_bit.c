@@ -19,7 +19,7 @@ void s21_print_bits(s21_decimal value) {
 
 void s21_pretty_print_bits(s21_decimal value) {
   printf("\nЗнак: ");
-  printf(s21_get_sign(value) ? "+\n" : "-\n");
+  printf(s21_get_sign(value) ? "-\n" : "+\n");
   printf("Степень: %d\n", s21_get_scale(value));
   // printf("Младшее слово: %d\n", s21_get_mantissa(value));
 

@@ -86,6 +86,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst);
 int s21_from_decimal_to_float(s21_decimal src, float *dst);
 
 void s21_from_decimal_to_big(s21_decimal src, s21_big_decimal *dst);
+int s21_from_big_to_decimal(s21_big_decimal* big, s21_decimal* decimal);
 
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
@@ -137,5 +138,6 @@ void s21_free_decimal(s21_decimal *value);
 void s21_clear_decimal(s21_decimal *value);
 void s21_left_shift_decimal(s21_decimal src, s21_decimal *dst, int shift);
 void s21_copy_decimal(s21_decimal src, s21_decimal *dst);
+int s21_normalize(s21_decimal *value_1, s21_decimal *value_2);
 
 #endif
