@@ -7,4 +7,6 @@ void s21_from_decimal_to_big(s21_decimal src, s21_big_decimal *dst) {
     s21_get_bit(src, i) ? s21_big_set_bit(dst, i) : s21_big_reset_bit(dst, i);
   if (s21_big_get_sign(*dst))
     for (int i = 96; i < 224; i++) s21_big_set_bit(dst, i);
+  else
+    for (int i = 96; i < 224; i++) s21_big_reset_bit(dst, i);
 }

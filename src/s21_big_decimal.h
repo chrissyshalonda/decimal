@@ -29,11 +29,13 @@ int s21_big_div(s21_big_decimal value_1, s21_big_decimal value_2,
 int s21_big_mod(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *result);
 
-int s21_big_base_add(const s21_big_decimal *value_1,
-                     const s21_big_decimal *value_2, s21_big_decimal *result);
-int s21_big_base_sub(const s21_big_decimal *value_1,
-                     const s21_big_decimal *value_2, s21_big_decimal *result);
+int s21_big_base_add(s21_big_decimal value_1, s21_big_decimal value_2,
+                     s21_big_decimal *result);
+int s21_big_base_sub(s21_big_decimal value_1, s21_big_decimal value_2,
+                     s21_big_decimal *result);
 
+int s21_big_base_mul(s21_big_decimal value_1, s21_big_decimal value_2,
+                     s21_big_decimal *result);
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
@@ -68,6 +70,8 @@ int s21_big_from_int_to_decimal(int src, s21_big_decimal *dst);
 int s21_big_from_float_to_decimal(float src, s21_big_decimal *dst);
 int s21_big_from_decimal_to_int(s21_big_decimal src, int *dst);
 int s21_big_from_decimal_to_float(s21_big_decimal src, float *dst);
+
+int s21_from_int_to_big_decimal(int src, s21_big_decimal *dst);
 
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
