@@ -18,10 +18,11 @@ void s21_print_bits(s21_decimal value) {
 }
 
 void s21_pretty_print_bits(s21_decimal value) {
-  printf("\nЗнак: ");
-  printf(s21_get_sign(value) ? "-\n" : "+\n");
-  printf("Степень: %d\n", s21_get_scale(value));
-  // printf("Младшее слово: %d\n", s21_get_mantissa(value));
+  char *number = malloc(100);
+  s21_from_decimal_to_string(value, number);
+
+  printf("\nЗначение:" YELLOW " %s" RESET "\n", number);
+  free(number);
 
   for (int i = 3; i >= 0; i--) {
     printf(YELLOW "\n\n        %d" RESET, i * 32 + 31);

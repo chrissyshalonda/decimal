@@ -23,11 +23,11 @@ int s21_big_sub(s21_big_decimal value_1, s21_big_decimal value_2,
   return 0;
 }
 
-int s21_big_base_sub(const s21_big_decimal* value_1,
-                     const s21_big_decimal* value_2, s21_big_decimal* result) {
+int s21_big_base_sub(s21_big_decimal value_1, s21_big_decimal value_2,
+                     s21_big_decimal* result) {
   s21_big_decimal* temp = s21_big_create_decimal();
-  s21_big_negate(*value_2, temp);
-  s21_big_base_add(value_1, temp, result);
+  s21_big_negate(value_2, temp);
+  s21_big_base_add(value_1, *temp, result);
   s21_big_free_decimal(temp);
   return 0;
 }
