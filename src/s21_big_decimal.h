@@ -72,6 +72,8 @@ int s21_big_from_decimal_to_int(s21_big_decimal src, int *dst);
 int s21_big_from_decimal_to_float(s21_big_decimal src, float *dst);
 
 int s21_from_int_to_big_decimal(int src, s21_big_decimal *dst);
+void s21_from_big_decimal_to_string(s21_big_decimal value, char *decimal);
+int s21_from_big_decimal_to_binary_string(s21_big_decimal value, char *binary);
 
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:

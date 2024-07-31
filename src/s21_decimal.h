@@ -141,6 +141,7 @@ void s21_clear_decimal(s21_decimal *value);
 void s21_left_shift_decimal(s21_decimal src, s21_decimal *dst, int shift);
 void s21_copy_decimal(s21_decimal src, s21_decimal *dst);
 int s21_normalize(s21_decimal *value_1, s21_decimal *value_2);
-s21_decimal s21_init(char *str);
+s21_decimal s21_init_int(int value, int scale);
+s21_decimal s21_init(int value1, int value2, int value3, int scale, int sign);
 
 #endif

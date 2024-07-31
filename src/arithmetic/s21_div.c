@@ -7,16 +7,26 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
 int s21_base_div(s21_decimal value_1, s21_decimal value_2,
                  s21_decimal *result) {
-  s21_decimal *zero = s21_create_decimal();
-  if (s21_is_equal(value_2, *zero)) {
-    s21_free_decimal(zero);
-    return DIVIDE_BY_ZERO;
-  }
-  bool is_negative = s21_get_sign(value_1) ^ s21_get_sign(value_2);
-  if (s21_get_sign(value_1)) s21_negate(value_1, &value_1);
-  if (s21_get_sign(value_2)) s21_negate(value_2, &value_2);
-
-  if (is_negative) s21_negate(*result, result);
-  s21_free_decimal(zero);
+  // Реализация базового деления для s21_decimal
+  // s21_decimal* частное = s21_create_decimal();
+  // s21_decimal* остаток = s21_create_decimal();
+  // s21_decimal* делитель = s21_create_decimal();
+  // s21_decimal* делимое = s21_create_decimal();
+  
+  // *делитель = value_2;
+  // *делимое = value_1;
+  
+  // while (s21_is_greater_or_equal(*делимое, *делитель)) {
+  //   s21_base_sub(*делимое, *делитель, делимое);
+  //   s21_base_add(*частное, s21_init_int(1, 0), частное);
+  // }
+  
+  // *result = *частное;
+  // *остаток = *делимое;
+  
+  // s21_free_decimal(частное);
+  // s21_free_decimal(остаток);
+  // s21_free_decimal(делитель);
+  // s21_free_decimal(делимое);
   return 0;
 }

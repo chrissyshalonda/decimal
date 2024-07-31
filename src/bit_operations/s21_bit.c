@@ -119,9 +119,11 @@ void s21_big_print_bits(s21_big_decimal value) {
 }
 
 void s21_big_pretty_print_bits(s21_big_decimal value) {
-  printf("\nЗнак: ");
-  printf(s21_big_get_sign(value) ? "+\n" : "-\n");
-  printf("Степень: %d\n", s21_big_get_scale(value));
+  char *number = malloc(256);
+  s21_from_big_decimal_to_string(value, number);
+
+  printf("\nЗначение:" YELLOW " %s" RESET "\n", number);
+  free(number);
 
   for (int i = 7; i >= 0; i--) {
     printf(YELLOW "\n\n        %d" RESET, i * 32 + 31);
