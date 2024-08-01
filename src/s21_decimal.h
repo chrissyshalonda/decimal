@@ -122,4 +122,6 @@ int s21_get_sign(s21_decimal value);
 s21_decimal* s21_create_decimal();
 void s21_free_decimal(s21_decimal* value);
 s21_decimal s21_clear_decimal();
+s21_decimal s21_binary_shift_left(s21_decimal value);
+int s21_add_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 #endif
