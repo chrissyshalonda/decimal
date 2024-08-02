@@ -15,6 +15,7 @@ int s21_max_not_null_bit(s21_decimal value){
     return result;
 }
 
+
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     ERRORS code = OK;
 
@@ -38,19 +39,24 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     return code;
 }
 
+
 int s21_mul_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result){
     int scale_1 = s21_get_scale(value_1);
     int scale_2 = s21_get_scale(value_2);
 
     value_1.bits[3] = value_2.bits[3] = 0;
-
     int max_bit = s21_max_not_null_bit(value_2);
 
-    for(int i = 0; i < max_bit; i++){
+    s21_decimal tmp = value_1;
+
+    for(int i = 0; i <= max_bit; i++){
         if(s21_get_bit(value_2, i)){
-            s21_add_processing(value_1, value_2, result);
+            s21_add_processing(*result, tmp, result);
         }
-        value_2 = s21_binary_shift_left(value_2);
+        tmp = s21_binary_shift_left(tmp);
     }
+
+    s21_set_scale(result, scale_1 + scale_2);
+
     return 0;
 }

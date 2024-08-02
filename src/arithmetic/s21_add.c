@@ -30,13 +30,13 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
 
 int s21_add_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result){
-    while(!s21_equal_zero(value_2)){ // 0 1 // 1 0
+    while(!s21_equal_zero(value_2)){ 
         s21_decimal overflow = s21_binary_and(value_1, value_2);
         overflow = s21_binary_shift_left(overflow);
         value_1 = s21_binary_xor(value_1, value_2); 
         value_2 = overflow;
     }
-
+    
     *result = value_1;
     return 0;
 }
