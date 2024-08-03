@@ -1,4 +1,4 @@
-#include "../s21_decimal.h"
+#include "s21_arithmetic.h"
 
 int s21_mul_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_max_not_null_bit(s21_decimal value);

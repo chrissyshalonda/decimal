@@ -10,13 +10,13 @@ void bitwise_shift_memory(void* memory, size_t size, int shift) {
 
 int main() {
   s21_decimal value = {0, 0, 0, 0};
-  s21_decimal first = {12, 1, 0, 0};  
-  s21_decimal second ={17, 1, 0, 0};
+  s21_decimal first = {4, 0, 0, 0};  
+  s21_decimal second ={8, 0, 0, 0};
 
-  s21_set_scale(&first, 5);
-  s21_set_scale(&second, 5);
+  s21_set_scale(&first, 1);
+  s21_set_scale(&second, 1);
 
-  s21_mul(first, second, &value);
+  s21_add(first, second, &value);
 
   s21_pretty_print_bits(value);
   return 0;

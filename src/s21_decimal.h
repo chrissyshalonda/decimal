@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "s21_big_decimal.h"
 
 #define POSITIVE_SIGN 0
 #define NEGATIVE_SIGN 1

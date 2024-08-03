@@ -1,9 +1,4 @@
-#include "../s21_decimal.h"
-
-int s21_equal_zero(s21_decimal value);
-s21_decimal s21_binary_and(s21_decimal result, s21_decimal tmp);
-s21_decimal s21_binary_xor(s21_decimal result, s21_decimal tmp);
-s21_decimal s21_binary_shift_left(s21_decimal value);
+#include "s21_arithmetic.h"
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     ERRORS code = OK;
@@ -30,6 +25,15 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
 
 int s21_add_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result){
+    int sign1 = s21_get_sign(value_1);
+    int sign2 = s21_get_sign(value_2);
+
+    int scale_1 = s21_get_scale(value_1);
+    int scale_2 = s21_get_scale(value_2);
+    value_1.bits[3] = value_2.bits[3] = 0;
+
+    s21_scale_rounding(&value_1, &value_2);
+
     while(!s21_equal_zero(value_2)){ 
         s21_decimal overflow = s21_binary_and(value_1, value_2);
         overflow = s21_binary_shift_left(overflow);
