@@ -7,16 +7,16 @@
 
 int main() {
   // Двоичное число в виде строки
-  s21_decimal value1 = s21_init_int(120001, 4);
-  s21_decimal value2 = s21_init_int(-12, 0);
+  s21_decimal value1 = s21_init_int(12, 0);
+  s21_decimal value2 = s21_init_int(2, 0);
   s21_decimal result;
 
   s21_pretty_print_bits(value1);
   s21_pretty_print_bits(value2);
 
-  s21_sub(value2, value1, &result);
+  s21_big_base_div(value2, value1, &result);
 
-  s21_pretty_print_bits(result);
+  // s21_pretty_print_bits(result);
 
   // s21_decimal value2 = s21_init(0xFFFFFFFF, 0xFFFFFFFF, 0x000FFFFF, 16, 0);
   // s21_decimal value1 = s21_init_int(10000, 3);
