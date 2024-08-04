@@ -54,6 +54,7 @@ int s21_base_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_base_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 int s21_inverse(s21_decimal value, s21_decimal *result);
+int s21_abs(s21_decimal value, s21_decimal *result);
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK

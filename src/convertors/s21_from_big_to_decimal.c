@@ -2,9 +2,10 @@
 
 int s21_from_big_to_decimal(s21_big_decimal* big, s21_decimal* decimal) {
   // normalize
+
   int error = 0;
   for (int i = 96; i < 224; i++)
-    if (s21_big_get_bit(*big, i)) {
+    if (s21_big_get_bit(*big, i) ^ s21_big_get_sign(*big)) {
       error = s21_big_get_sign(*big) ? NEG_INFINITY : INFINITY;
       break;
     }

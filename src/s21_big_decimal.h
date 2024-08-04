@@ -56,6 +56,8 @@ int s21_big_is_greater_or_equal(s21_big_decimal value_1,
 int s21_big_is_equal(s21_big_decimal value_1, s21_big_decimal value_2);
 int s21_big_is_not_equal(s21_big_decimal value_1, s21_big_decimal value_2);
 
+int s21_big_abs(s21_big_decimal value, s21_big_decimal *result);
+
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
