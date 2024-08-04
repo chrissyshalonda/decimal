@@ -51,6 +51,9 @@ int s21_mod(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_base_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_base_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_base_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+int s21_base_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+
+int s21_inverse(s21_decimal value, s21_decimal *result);
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
@@ -143,5 +146,6 @@ void s21_copy_decimal(s21_decimal src, s21_decimal *dst);
 int s21_normalize(s21_decimal *value_1, s21_decimal *value_2);
 s21_decimal s21_init_int(int value, int scale);
 s21_decimal s21_init(int value1, int value2, int value3, int scale, int sign);
+int s21_length(s21_decimal value);
 
 #endif
