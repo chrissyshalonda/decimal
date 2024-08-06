@@ -118,6 +118,10 @@ START_TEST(test_s21_is_greater) {
   value1 = s21_init_int(120001, 4);
   value2 = s21_init_int(-12000, 3);
   ck_assert(s21_is_greater(value1, value2));
+
+  value1 = s21_init_int(24, 0);
+  value2 = s21_init_int(18, 0);
+  ck_assert(s21_is_greater(value1, value2));
 }
 
 START_TEST(test_s21_is_greater_or_equal) {
@@ -261,6 +265,10 @@ START_TEST(test_s21_big_is_greater) {
   ck_assert(!s21_big_is_greater(value1, value2));
   value1 = s21_big_init_int(120001, 4);
   value2 = s21_big_init_int(-12000, 3);
+  ck_assert(s21_big_is_greater(value1, value2));
+
+  value1 = s21_big_init_int(24, 0);
+  value2 = s21_big_init_int(18, 0);
   ck_assert(s21_big_is_greater(value1, value2));
 }
 

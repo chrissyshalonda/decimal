@@ -12,33 +12,13 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     s21_negate(value_2, &value_2);
     sign_result = 1;
   }
-  // printf("value_1:\n");
-  // s21_pretty_print_bits(value_1);
-  // printf("value_2:\n");
-  // s21_pretty_print_bits(value_2);
 
   s21_from_decimal_to_big(value_1, &value_big_1);
   s21_from_decimal_to_big(value_2, &value_big_2);
-  // printf("value_1:\n");
-  // s21_big_pretty_print_bits(value_big_1);
-  // printf("value_2:\n");
-  // s21_big_pretty_print_bits(value_big_2);
-
   s21_big_normalize(&value_big_1, &value_big_2);
-
-  // printf("normalized value_1:\n");
-  // s21_big_pretty_print_bits(value_big_1);
-  // printf("normalized value_2:\n");
-  // s21_big_pretty_print_bits(value_big_2);
   s21_big_base_add(value_big_1, value_big_2, &result_big);
-
-  // s21_big_pretty_print_bits(result_big);
   s21_big_set_scale(&result_big, s21_big_get_scale(value_big_1));
-  // printf("result_big:\n");
   if (sign_result == 1) s21_big_negate(result_big, &result_big);
-
-  // s21_big_pretty_print_bits(result_big);
-
   return s21_from_big_to_decimal(&result_big, result);
 }
 
@@ -57,6 +37,30 @@ int s21_base_add(s21_decimal value_1, s21_decimal value_2,
 }
 
 //-----------------------------------BIG_DECIMALS-------------------------------------------
+
+int s21_big_add(s21_big_decimal value_1, s21_big_decimal value_2,
+                s21_big_decimal* result) {
+  s21_big_clear_decimal(result);
+  int sign1 = s21_big_get_sign(value_1);
+  int sign2 = s21_big_get_sign(value_2);
+  int sign_result = 0;
+  if (sign1 == 1 && sign2 == 1) {
+    s21_big_negate(value_1, &value_1);
+    s21_big_negate(value_2, &value_2);
+    sign_result = 1;
+  }
+
+  s21_big_normalize(&value_1, &value_2);
+  s21_big_base_add(value_1, value_2, result);
+  s21_big_set_scale(result, s21_big_get_scale(value_1));
+  if (sign_result == 1) s21_big_negate(*result, result);
+
+  if (result->bits[0] == 0 && result->bits[1] == 0 && result->bits[2] == 0 &&
+      result->bits[3] == 0 && result->bits[4] == 0 && result->bits[5] == 0 &&
+      result->bits[6] == 0)
+    s21_big_set_sign(result, 0);
+  return 0;
+}
 
 int s21_big_base_add(s21_big_decimal value_1, s21_big_decimal value_2,
                      s21_big_decimal* result) {

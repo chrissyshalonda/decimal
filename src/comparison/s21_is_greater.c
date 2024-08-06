@@ -13,7 +13,6 @@ int s21_big_is_greater(s21_big_decimal value_big_1,
                        s21_big_decimal value_big_2) {
   s21_big_normalize(&value_big_1, &value_big_2);
 
-
   int sign_1 = s21_big_get_sign(value_big_1);
   int sign_2 = s21_big_get_sign(value_big_2);
 
@@ -26,9 +25,8 @@ int s21_big_is_greater(s21_big_decimal value_big_1,
       s21_big_negate(value_big_2, &value_big_2);
     }
 
-
-    for (int i = 223; i >= 0; i--) {
-      if (s21_big_get_bit(value_big_2, i) > s21_big_get_bit(value_big_1, i)) {
+    for (int i = 6; i >= 0; i--) {
+      if (value_big_2.bits[i] > value_big_1.bits[i]) {
         result = false;
         break;
       }
