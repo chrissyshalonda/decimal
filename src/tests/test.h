@@ -12,7 +12,7 @@
 // Suite * test_arithmetic(void);
 Suite * test_bit_operations(void);
 Suite * test_common(void);
-// Suite * test_comparison(void);
+Suite * test_comparison(void);
 Suite * test_convertors(void);
 
 

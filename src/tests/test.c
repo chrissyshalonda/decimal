@@ -12,7 +12,7 @@ int main(void) {
   int failed = 0;
   printf(GREEN);
   Suite *suite_array[] = {test_bit_operations(), test_common(),
-                          test_convertors()};
+                          test_convertors(), test_comparison()};
 
   for (int i = 0; i < (int)(sizeof(suite_array) / sizeof(suite_array[0])); i++)
 
