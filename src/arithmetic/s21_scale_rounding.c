@@ -4,10 +4,7 @@ s21_decimal s21_get_ten_value(int scale_value){
     return scale_table[scale_value];
 }
 
-void s21_scale_rounding(s21_decimal *value_1, s21_decimal *value_2){
-    int scale_1 = s21_get_scale(*value_1);
-    int scale_2 = s21_get_scale(*value_2);
-
+void s21_scale_rounding(s21_decimal *value_1,s21_decimal *value_2, int scale_1, int scale_2){
     if(scale_1 > scale_2){
         s21_mul_processing(*value_2, s21_get_ten_value(scale_1 - scale_2) , value_2);
     } else if (scale_1 < scale_2){

@@ -2,8 +2,6 @@
 #define S21_DECIMAL_H
 
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdbool.h>
 
 #define POSITIVE_SIGN 0
@@ -122,8 +120,7 @@ s21_decimal* s21_create_decimal();
 void s21_free_decimal(s21_decimal* value);
 s21_decimal s21_clear_decimal();
 s21_decimal s21_binary_shift_left(s21_decimal value);
-int s21_add_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
-
+s21_decimal s21_binary_shift_right(s21_decimal value);
 
 
 static const s21_decimal scale_table[29] = {

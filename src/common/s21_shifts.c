@@ -28,3 +28,32 @@ s21_decimal s21_binary_shift_left(s21_decimal value){
 
     return result;
 }
+
+s21_decimal s21_binary_shift_right(s21_decimal value){
+    s21_decimal result = s21_clear_decimal();
+
+    int four = s21_get_bit(value, 96);
+    unsigned int result_four = value.bits[3];
+    result_four = result_four >> 1;
+    result.bits[3] = result_four;
+
+    int third = s21_get_bit(value, 64);
+    unsigned int result_third = value.bits[2];
+    result_third = result_third >> 1;
+    result.bits[2] = result_third;
+
+    int second = s21_get_bit(value, 32);
+    unsigned int result_second = value.bits[1];
+    result_second = result_second >> 1;
+    result.bits[1] = result_second;
+
+    unsigned int result_first = value.bits[0];
+    result_first = result_first >> 1;
+    result.bits[0] = result_first;
+
+    if(four) s21_set_bit(&result, 95);
+    if(third) s21_set_bit(&result, 63);
+    if(second) s21_set_bit(&result, 31);
+
+    return result;
+}

@@ -1,14 +1,12 @@
 #include "s21_arithmetic.h"
+#include "../s21_decimal.h"
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     ERRORS code = OK;
 
     if(!result){
-
         code = UNEXEPTED_ERROR;
     } else {
-
-        *result = s21_clear_decimal(*result);
 
         int sign1 = s21_get_sign(value_1);
         int sign2 = s21_get_sign(value_2);
@@ -18,6 +16,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
         } else if (sign1 == POSITIVE_SIGN && sign2 == NEGATIVE_SIGN){
         } else if (sign1 == NEGATIVE_SIGN && sign2 == POSITIVE_SIGN){
         } else if (sign1 == NEGATIVE_SIGN && sign2 == NEGATIVE_SIGN){
+            s21_add_processing(value_1, value_2, result);
+            s21_set_sign(result, 1);
         }
     }
     return code;
@@ -30,20 +30,18 @@ int s21_add_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *re
 
     int scale_1 = s21_get_scale(value_1);
     int scale_2 = s21_get_scale(value_2);
+    int max_scale = scale_1 > scale_2 ? scale_1 : scale_2;
     value_1.bits[3] = value_2.bits[3] = 0;
 
-    s21_scale_rounding(&value_1, &value_2);
+    s21_scale_rounding(&value_1, &value_2, scale_1, scale_2);
+    *result = s21_binary_addition(value_1, value_2);
+    *result = s21_shift_for_correct_decimal(*result, &max_scale);
 
-    while(!s21_equal_zero(value_2)){ 
-        s21_decimal overflow = s21_binary_and(value_1, value_2);
-        overflow = s21_binary_shift_left(overflow);
-        value_1 = s21_binary_xor(value_1, value_2); 
-        value_2 = overflow;
-    }
-    
-    *result = value_1;
+    s21_set_scale(result, max_scale);
+
     return 0;
 }
+
 
 int s21_equal_zero(s21_decimal value){
     return (value.bits[0] == 0 && value.bits[1] == 0 && value.bits[2] == 0 && value.bits[3] == 0);
@@ -66,14 +64,29 @@ s21_decimal s21_binary_xor(s21_decimal result, s21_decimal tmp){
 }
 
 
+s21_decimal s21_binary_addition(s21_decimal value_1, s21_decimal value_2){
+    s21_decimal result = value_1;
+    s21_decimal tmp = value_2;
+
+    while(!(s21_equal_zero(tmp))){
+        s21_decimal overflow = s21_binary_and(result, tmp);
+        overflow = s21_binary_shift_left(overflow);
+        result = s21_binary_xor(result, tmp);
+        tmp = overflow;
+    }
+
+    return result;
+}
 
 
+s21_decimal s21_shift_for_correct_decimal(s21_decimal value, int *max_scale){
+    while(value.bits[3] != 0){
+        value = s21_binary_division(value, scale_table[1], ((void *)0));
+        (*max_scale)--;
+    }
 
-
-
-
-
-
+    return value;
+}
 
 
 

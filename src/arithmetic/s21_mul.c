@@ -1,12 +1,8 @@
 #include "s21_arithmetic.h"
 
-int s21_mul_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
-int s21_max_not_null_bit(s21_decimal value);
-
-
 int s21_max_not_null_bit(s21_decimal value){
     int result = -1;
-    for(int i = 127; i >= 0; i--){
+    for(int i = 95; i >= 0; i--){
         if(s21_get_bit(value, i)){
             result = i;
             break;
@@ -36,6 +32,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
         } else if (sign1 == NEGATIVE_SIGN && sign2 == NEGATIVE_SIGN){
         }
     }
+    
     return code;
 }
 
@@ -43,7 +40,8 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 int s21_mul_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result){
     int scale_1 = s21_get_scale(value_1);
     int scale_2 = s21_get_scale(value_2);
-
+    *result = s21_clear_decimal();
+    
     value_1.bits[3] = value_2.bits[3] = 0;
     int max_bit = s21_max_not_null_bit(value_2);
 
