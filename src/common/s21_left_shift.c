@@ -61,7 +61,7 @@ void s21_big_left_shift_decimal(s21_big_decimal src, s21_big_decimal *dst,
   int remaining_shift = shift % 32;
 
   // Сдвигаем целые 32-битные части
-  for (int i = 2; i >= whole_shifts; i--) {
+  for (int i = 6; i >= whole_shifts; i--) {
     dst->bits[i] = dst->bits[i - whole_shifts];
   }
   for (int i = 0; i < whole_shifts; i++) {

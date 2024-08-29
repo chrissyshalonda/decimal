@@ -9,7 +9,7 @@ void s21_copy_decimal(s21_decimal src, s21_decimal* dst) {
 //----------------------------------BIG_DECIMAL-----------------------------------
 
 void s21_big_copy_decimal(s21_big_decimal src, s21_big_decimal* dst) {
-  for (int i = 0; i < 7; i++) {
+  for (int i = 0; i < 8; i++) {
     dst->bits[i] = src.bits[i];
   }
 }

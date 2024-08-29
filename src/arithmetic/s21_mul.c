@@ -18,6 +18,7 @@ int s21_base_mul(s21_decimal value_1, s21_decimal value_2,
     if (s21_get_bit(value_2, i)) {
       s21_clear_decimal(result);
       s21_left_shift_decimal(value_1, shift_temp, i);
+      printf("опа");
       s21_base_add(*shift_temp, *temp, result);
       s21_copy_decimal(*result, temp);
     }
@@ -35,6 +36,24 @@ int s21_base_mul(s21_decimal value_1, s21_decimal value_2,
 
 int s21_big_base_mul(s21_big_decimal value_1, s21_big_decimal value_2,
                      s21_big_decimal *result) {
+  s21_big_decimal *swap = s21_big_create_decimal();
+
+  printf("before value_1\n");
+  s21_big_pretty_print_bits(value_1);
+  printf("before value_2\n");
+  s21_big_pretty_print_bits(value_2);
+  //нужно выбрать по какому числу проходиться
+  if (s21_big_is_less(value_1, value_2)) {
+    s21_big_copy_decimal(value_1, swap);
+    s21_big_copy_decimal(value_2, &value_1);
+    s21_big_copy_decimal(*swap, &value_2);
+  }
+
+  printf("after value_1\n");
+  s21_big_pretty_print_bits(value_1);
+  printf("after value_2\n");
+  s21_big_pretty_print_bits(value_2);
+
   bool is_negative = s21_big_get_sign(value_1) ^ s21_big_get_sign(value_2);
   if (s21_big_get_sign(value_1)) s21_big_negate(value_1, &value_1);
   if (s21_big_get_sign(value_2)) s21_big_negate(value_2, &value_2);
@@ -46,6 +65,7 @@ int s21_big_base_mul(s21_big_decimal value_1, s21_big_decimal value_2,
     if (s21_big_get_bit(value_2, i)) {
       s21_big_clear_decimal(result);
       s21_big_left_shift_decimal(value_1, shift_temp, i);
+      printf("опа");
       s21_big_base_add(*shift_temp, *temp, result);
       s21_big_copy_decimal(*result, temp);
     }
@@ -56,6 +76,6 @@ int s21_big_base_mul(s21_big_decimal value_1, s21_big_decimal value_2,
                     s21_big_get_scale(value_1) + s21_big_get_scale(value_2));
   s21_big_free_decimal(shift_temp);
   s21_big_free_decimal(temp);
-
+  s21_big_free_decimal(swap);
   return 0;
 }

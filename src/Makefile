@@ -20,7 +20,7 @@ OBJECTS := $(SOURCES:.c=.o)
 
 TEST_SOURCES := $(shell find ./tests -name '*.c')
 TEST_OBJECTS := $(TEST_SOURCES:.c=.o)
-
+GCOV_FILES := $(shell find . -name '*.gcda' ) $(shell find . -name '*.gcno') $(shell find . -name '*.dSYM')  
 
 
 
@@ -49,15 +49,18 @@ clean:
 	rm -f $(OBJECTS) 
 	rm -f $(TEST_OBJECTS)
 	rm -f $(ENTRY_POINTS_OBJ)
-	rm -rf *.dSYM
+	rm -rf $(GCOV_FILES)
+	rm -rf report
 	rm -f main.out test.out
+	rm -rf *.dSYM
 
 clean-all: clean
 	rm -f s21_decimal.a
 
 
+
 gcov_report: FLAGS += $(GCOV_FLAGS)
-gcov_report: clang test.out
+gcov_report: clang test
 	./test.out
 	mkdir -p report
 	gcovr --html-details -o report/report.html --exclude tests/test.c 

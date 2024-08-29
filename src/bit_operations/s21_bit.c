@@ -23,6 +23,11 @@ void s21_pretty_print_bits(s21_decimal value) {
 
   printf("\nЗначение:" YELLOW " %s" RESET "\n", number);
   free(number);
+  printf("\n" BG_BLUE
+         "{{0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, "
+         "0x%08X}}" RESET "\n",
+         value.bits[0], value.bits[1], value.bits[2], value.bits[3],
+         value.bits[4], value.bits[5], value.bits[6], value.bits[7]);
 
   for (int i = 3; i >= 0; i--) {
     printf(YELLOW "\n\n        %d" RESET, i * 32 + 31);
@@ -122,8 +127,13 @@ void s21_big_pretty_print_bits(s21_big_decimal value) {
   char *number = malloc(256);
   s21_from_big_decimal_to_string(value, number);
 
-  printf("\nЗначение:" YELLOW " %s" RESET "\n", number);
+  printf("\nЗначение:" YELLOW " %s" RESET "\n\n", number);
   free(number);
+  printf(BG_BLUE
+         " {{0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, "
+         "0x%08X}}" RESET "\n",
+         value.bits[0], value.bits[1], value.bits[2], value.bits[3],
+         value.bits[4], value.bits[5], value.bits[6], value.bits[7]);
 
   for (int i = 7; i >= 0; i--) {
     printf(YELLOW "\n\n        %d" RESET, i * 32 + 31);

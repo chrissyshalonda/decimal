@@ -2,6 +2,7 @@
 
 s21_decimal s21_init_int(int value, int scale) {
   s21_decimal result;
+  s21_clear_decimal(&result);
   result.bits[0] = value;
   result.bits[1] = value < 0 ? 0xFFFFFFFF : 0;
   result.bits[2] = value < 0 ? 0xFFFFFFFF : 0;
@@ -26,6 +27,7 @@ s21_decimal s21_init(int value1, int value2, int value3, int scale, int sign) {
 
 s21_big_decimal s21_big_init_int(int value, int scale) {
   s21_big_decimal result;
+  s21_big_clear_decimal(&result);
   result.bits[0] = value;
   result.bits[1] = value < 0 ? 0xFFFFFFFF : 0;
   result.bits[2] = value < 0 ? 0xFFFFFFFF : 0;
