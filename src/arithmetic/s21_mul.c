@@ -54,7 +54,5 @@ int s21_mul_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *re
         tmp = s21_binary_shift_left(tmp);
     }
 
-    s21_set_scale(result, scale_1 + scale_2);
-
     return 0;
 }

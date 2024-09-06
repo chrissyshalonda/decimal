@@ -37,9 +37,8 @@ void s21_print_bits(s21_decimal value) {
 
 
 void s21_pretty_print_bits(s21_decimal value) {
-  char *number = malloc(100);
-  s21_from_decimal_to_string(value, number);
-
+  char *number = malloc(200);
+  //s21_from_decimal_to_string(value, number);
   printf("\nЗначение:" YELLOW " %s" RESET "\n", number);
   free(number);
 
@@ -85,7 +84,7 @@ int s21_set_bit(s21_decimal *value, int bit_index) {
     bool result = bit_index >= 0 && bit_index < 128;
     if(result)
         value->bits[getRow(bit_index)] |= (1 << getCol(bit_index));
-    return !result;
+    return result;
 }
 
 int s21_reset_bit(s21_decimal *value, int bit_index) {
@@ -156,7 +155,7 @@ int s21_from_decimal_to_binary_string(s21_decimal value, char *binary) {
 }
 
 void s21_from_decimal_to_string(s21_decimal value, char *decimal) {
-  char *binary = malloc(100);
+  char *binary = malloc(200);
   int sign = s21_from_decimal_to_binary_string(value, binary);
   int scale = s21_get_scale(value);
 
@@ -185,7 +184,7 @@ void s21_from_decimal_to_string(s21_decimal value, char *decimal) {
     strncpy(decimal, &result[start], len - scale);
     decimal[len - scale] = '.';
     strcpy(decimal + len - scale + 1, &result[start + len - scale]);
-  } else if (scale >= len) {
+  }  else if (scale >= len) {
     strcpy(decimal, "0.");
     for (int i = 0; i < scale - len; i++) {
       strcat(decimal, "0");
@@ -203,6 +202,5 @@ void s21_from_decimal_to_string(s21_decimal value, char *decimal) {
   }
 
   // Отладочный вывод
-
   free(binary);
 }

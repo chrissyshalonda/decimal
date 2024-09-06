@@ -38,7 +38,7 @@ int s21_sub_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *re
 
 s21_decimal s21_binary_subtraction(s21_decimal value_1, s21_decimal value_2){
     s21_decimal result = s21_clear_decimal();
-    //value_2 = s21_binary_not(value_2);
+    value_2 = s21_binary_not(value_2);
     value_2 = s21_binary_addition(value_2, s21_get_one());
     result = s21_binary_addition(value_1, value_2);
     return result;

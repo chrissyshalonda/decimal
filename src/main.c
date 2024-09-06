@@ -1,16 +1,19 @@
-#include "s21_decimal.h"
 #include "arithmetic/s21_arithmetic.h"
-int main() {
-  s21_decimal value = {0, 0, 0, 0};
-  s21_decimal first = {2, 0, 0, 0};  
-  s21_decimal second ={1, 0, 0, 0};
+#include "s21_decimal.h"
+#include <stdio.h>
 
+int main(){
+    s21_decimal result = s21_clear_decimal();
+    s21_decimal first = {4, 0, 0, 0};
+    s21_decimal second = {2, 0, 0, 0};
+    s21_decimal remainder = s21_clear_decimal();
 
-  value = s21_binary_subtraction(first, second);
+    s21_set_scale(&first, 0);
+    s21_set_scale(&second, 0);
 
-  s21_pretty_print_bits(value);
-  return 0;
+    //result = s21_binary_subtraction(first, second);
+    result = s21_binary_division(first, second, &remainder);
+    //s21_pretty_print_bits(result);  
+    // s21_pretty_print_bits(remainder);
+
 }
-
-
-

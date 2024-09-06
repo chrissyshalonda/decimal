@@ -3,7 +3,6 @@
 int s21_get_scale(s21_decimal value){
     s21_decimal result = value;
     s21_set_sign(&result,0);
-    
     return result.bits[3] >> 16;
 }
 
