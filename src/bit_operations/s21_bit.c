@@ -38,7 +38,7 @@ void s21_print_bits(s21_decimal value) {
 
 void s21_pretty_print_bits(s21_decimal value) {
   char *number = malloc(200);
-  //s21_from_decimal_to_string(value, number);
+  s21_from_decimal_to_string(value, number);
   printf("\nЗначение:" YELLOW " %s" RESET "\n", number);
   free(number);
 

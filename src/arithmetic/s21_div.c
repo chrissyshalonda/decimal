@@ -46,48 +46,47 @@ s21_decimal s21_binary_division(s21_decimal value_1, s21_decimal value_2, s21_de
         quotient = s21_clear_decimal();
         remainder_of_divison = value_1;
     } else {
-        int first = s21_max_not_null_bit(value_1); // 2
-        int second = s21_max_not_null_bit(value_2); // 1
+        int first = s21_max_not_null_bit(value_1);
+        int second = s21_max_not_null_bit(value_2);
         int shift = first - second; // 1
-
-        s21_decimal shifted = value_2; // 10
+        
+        s21_decimal shifted = value_2; 
         s21_decimal dividend = value_1; // 100
 
         for(int i = shift; i > 0; i--){
             shifted = s21_binary_shift_left(shifted); // shifted = 100
         }
-
+       
         int flag = 1;
 
-        while (shift >= 0) { // 1 // 0
+        while (shift >= 0) { // 1 // 0 
             if (flag == 1) {
-                remainder_of_divison = s21_binary_subtraction(dividend, shifted); // here 0 // -4
+                remainder_of_divison = s21_binary_subtraction(dividend, shifted); // here 0 // 
             } else {
-                remainder_of_divison = s21_binary_addition(dividend, shifted);
+                remainder_of_divison = s21_binary_addition(dividend, shifted); // skip // skip
             }
 
-            quotient = s21_binary_shift_left(quotient); // 0 // 10
+            quotient = s21_binary_shift_left(quotient); // 0
 
             if (s21_get_bit(remainder_of_divison, 127) == 0) {
-                s21_set_bit(&quotient, 0); // 1 // 10
+                s21_set_bit(&quotient, 0); // 1
             }
-
-            dividend = s21_binary_shift_left(remainder_of_divison); // 0 // 0
+            
+            dividend = s21_binary_shift_left(remainder_of_divison); // 0
 
             if (s21_get_bit(remainder_of_divison, 127) == 0) {
                 flag = 1; // here
             } else {
-                flag = 0;
+                flag = 0; // skip
             }
             --shift; // 0
         }
 
         if(s21_get_bit(remainder_of_divison, 127)){
-            remainder_of_divison = s21_binary_and(remainder_of_divison, shifted);
-            s21_pretty_print_bits(remainder_of_divison);
+            remainder_of_divison = s21_binary_addition(remainder_of_divison, shifted);
         }
 
-        for(int i = first - second; i >= 0; i--){
+        for(int i = first - second; i > 0; i--){
             remainder_of_divison = s21_binary_shift_right(remainder_of_divison);
         }
     }
