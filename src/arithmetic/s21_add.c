@@ -52,12 +52,10 @@ int s21_add_processing(s21_decimal value_1, s21_decimal value_2,
 
     s21_big_decimal remainder = s21_create_big_decimal(s21_clear_decimal());
     s21_big_decimal ten_scale = s21_create_big_decimal(scale_table[needed_shift]);
-    s21_pretty_print_bits(big_result.decimal[0], 3);
-    s21_pretty_print_bits(big_result.decimal[1], 3);
+    
     big_result = s21_big_binary_division(big_result, ten_scale, &remainder);
     s21_set_scale(&remainder.decimal[0], needed_shift);
-    s21_pretty_print_bits(big_result.decimal[0], 3);
-    s21_pretty_print_bits(big_result.decimal[1], 3);
+    
     
     big_result.decimal[0] = s21_round_banking(big_result.decimal[0], remainder.decimal[0]);
 
