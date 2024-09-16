@@ -1,246 +1,157 @@
-#include "s21_arithmetic.h"
 #include "../s21_decimal.h"
+#include "s21_arithmetic.h"
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-    ERRORS code = OK;
+  ERRORS code = OK;
 
-    if(!result){
-        code = UNEXEPTED_ERROR;
-    } else {
+  if (!result) {
+    code = UNEXEPTED_ERROR;
+  } else {
+    int sign1 = s21_get_sign(value_1);
+    int sign2 = s21_get_sign(value_2);
 
-        int sign1 = s21_get_sign(value_1);
-        int sign2 = s21_get_sign(value_2);
-
-        if(sign1 == POSITIVE_SIGN && sign2 == POSITIVE_SIGN){
-            code = s21_add_processing(value_1, value_2, result);
-        } else if (sign1 == POSITIVE_SIGN && sign2 == NEGATIVE_SIGN){
-        } else if (sign1 == NEGATIVE_SIGN && sign2 == POSITIVE_SIGN){
-        } else if (sign1 == NEGATIVE_SIGN && sign2 == NEGATIVE_SIGN){
-            code = s21_add_processing(value_1, value_2, result);
-            s21_set_sign(result, 1);
-        }
+    if (sign1 == POSITIVE_SIGN && sign2 == POSITIVE_SIGN) {
+      code = s21_add_processing(value_1, value_2, result);
+    } else if (sign1 == POSITIVE_SIGN && sign2 == NEGATIVE_SIGN) {
+    } else if (sign1 == NEGATIVE_SIGN && sign2 == POSITIVE_SIGN) {
+    } else if (sign1 == NEGATIVE_SIGN && sign2 == NEGATIVE_SIGN) {
+      code = s21_add_processing(value_1, value_2, result);
+      s21_set_sign(result, 1);
     }
-    return code;
+  }
+  return code;
 }
 
+int s21_add_processing(s21_decimal value_1, s21_decimal value_2,
+                       s21_decimal *result) {
+  int code = OK;
 
-int s21_add_processing(s21_decimal value_1, s21_decimal value_2, s21_decimal *result){
-    int code = OK;
-     
-    int scale_1 = s21_get_scale(value_1);
-    int scale_2 = s21_get_scale(value_2);
+  s21_big_decimal big_value_1;
+  s21_big_decimal big_value_2;
 
-    int max_scale = scale_1 > scale_2 ? scale_1 : scale_2;
-    value_1.bits[3] = value_2.bits[3] = 0;
+  int scale_1 = s21_get_scale(value_1);
+  int scale_2 = s21_get_scale(value_2); 
 
-    s21_scale_rounding(&value_1, &value_2, scale_1, scale_2);
+  int max_scale = scale_1 > scale_2 ? scale_1 : scale_2;
+  value_1.bits[3] = value_2.bits[3] = 0;
 
-    *result = s21_binary_addition(value_1, value_2);
-    int needed_shift = s21_shift_for_correct_decimal(*result);
-    int final_scale = max_scale - needed_shift;
+  s21_scale_rounding(&value_1, &value_2, scale_1, scale_2, &big_value_1, &big_value_2);
+  s21_big_decimal big_result = s21_big_binary_addition(big_value_1, big_value_2);
 
-    s21_decimal remainder = s21_clear_decimal();
-    s21_decimal ten_scale = scale_table[1];
-
-    *result = s21_binary_division(*result, ten_scale, &remainder);
-    s21_set_scale(&remainder, needed_shift);
-    s21_pretty_print_bits(remainder);
-    s21_set_scale(result, final_scale);
-
-    // if(final_scale < 0){
-    //     code = TOO_BIG;
-    // } else {
-    //     s21_decimal remainder = s21_clear_decimal();
-    //     s21_decimal ten_scale = scale_table[needed_shift];
-
-    //     *result = s21_binary_division(*result, ten_scale, &remainder);
-    //     s21_set_scale(&remainder, needed_shift);
-    //     s21_set_scale(result, final_scale);
+  int needed_shift = s21_shift_for_correct_decimal(big_result);
+  int final_scale = max_scale - needed_shift;
+  
+  
+  if (final_scale < 0) {
+    code = TOO_BIG;
+  } else {
+    // while(needed_shift > 28){
+    //   big_result = s21_big_binary_division(big_result, s21_create_big_decimal(scale_table[1]), NULL);
+    //   needed_shift--;
     // }
 
-    return code;
-}
+    s21_big_decimal remainder = s21_create_big_decimal(s21_clear_decimal());
+    s21_big_decimal ten_scale = s21_create_big_decimal(scale_table[needed_shift]);
+    s21_pretty_print_bits(big_result.decimal[0], 3);
+    s21_pretty_print_bits(big_result.decimal[1], 3);
+    big_result = s21_big_binary_division(big_result, ten_scale, &remainder);
+    s21_set_scale(&remainder.decimal[0], needed_shift);
+    s21_pretty_print_bits(big_result.decimal[0], 3);
+    s21_pretty_print_bits(big_result.decimal[1], 3);
+    
+    big_result.decimal[0] = s21_round_banking(big_result.decimal[0], remainder.decimal[0]);
 
+    s21_set_scale(&big_result.decimal[0], final_scale);
 
-int s21_equal_zero(s21_decimal value){
-    return (value.bits[0] == 0 && value.bits[1] == 0 && value.bits[2] == 0 && value.bits[3] == 0);
-}
-
-s21_decimal s21_binary_and(s21_decimal result, s21_decimal tmp){
-    s21_decimal output = s21_clear_decimal();
-    for(int i = 0; i < 4; i++){
-        output.bits[i] = result.bits[i] & tmp.bits[i];
+    if(!s21_equal_zero(big_result.decimal[1])){
+      code =  TOO_BIG;
     }
-    return output;
+    *result = big_result.decimal[0];
+  }
+
+  return code;
 }
 
-s21_decimal s21_binary_xor(s21_decimal result, s21_decimal tmp){
-    s21_decimal output = s21_clear_decimal();
-    for(int i = 0; i < 4; i++){
-        output.bits[i] = result.bits[i] ^ tmp.bits[i];
+int s21_equal_zero(s21_decimal value) {
+  return (value.bits[0] == 0 && value.bits[1] == 0 && value.bits[2] == 0 &&
+          value.bits[3] == 0);
+}
+
+s21_decimal s21_binary_and(s21_decimal result, s21_decimal tmp) {
+  s21_decimal output = s21_clear_decimal();
+  for (int i = 0; i < 4; i++) {
+    output.bits[i] = result.bits[i] & tmp.bits[i];
+  }
+  return output;
+}
+
+s21_decimal s21_binary_xor(s21_decimal result, s21_decimal tmp) {
+  s21_decimal output = s21_clear_decimal();
+  for (int i = 0; i < 4; i++) {
+    output.bits[i] = result.bits[i] ^ tmp.bits[i];
+  }
+  return output;
+}
+
+s21_decimal s21_binary_addition(s21_decimal value_1, s21_decimal value_2) {
+  s21_decimal result = value_1;
+  s21_decimal tmp = value_2;
+
+  while (!(s21_equal_zero(tmp))) {
+    s21_decimal overflow = s21_binary_and(result, tmp);
+    overflow = s21_binary_shift_left(overflow);
+    result = s21_binary_xor(result, tmp);
+    tmp = overflow;
+  }
+
+  return result;
+}
+
+s21_big_decimal s21_big_binary_addition(s21_big_decimal value_1, s21_big_decimal value_2) {
+  s21_big_decimal result = value_1;
+  s21_big_decimal tmp = value_2;
+
+  while (!(s21_equal_zero(tmp.decimal[0])) || !(s21_equal_zero(tmp.decimal[1]))) {
+    s21_big_decimal overflow;
+    overflow.decimal[0] = s21_binary_and(result.decimal[0], tmp.decimal[0]);
+    overflow.decimal[1] = s21_binary_and(result.decimal[1], tmp.decimal[1]);
+
+    overflow = s21_big_binary_shift_left(overflow);
+
+    result.decimal[0] = s21_binary_xor(result.decimal[0], tmp.decimal[0]);
+    result.decimal[1] = s21_binary_xor(result.decimal[1], tmp.decimal[1]);
+
+    tmp = overflow;
+  }
+
+  return result;
+}
+
+int s21_shift_for_correct_decimal(s21_big_decimal value) {
+  int count = 0;
+  
+  
+  if(!(s21_equal_zero(value.decimal[0]) && s21_equal_zero(value.decimal[1]))){
+    s21_decimal big = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x0}};
+    s21_big_decimal max = s21_create_big_decimal(big);
+    s21_big_decimal quotient = s21_big_binary_division(value, max, NULL);
+
+    // while(1){
+    //   int compare = s21_binary_compare(quotient.decimal[0], scale_table[count]);
+    //   if(compare == -1 || compare == 0){
+    //     break;
+    //   }
+    //   count++;
+    // }
+    
+    while(quotient.decimal[0].bits[3] != 0 && s21_equal_zero(quotient.decimal[1])){
+      quotient = s21_big_binary_division(quotient, s21_create_big_decimal(scale_table[1]), NULL);
+      count++;
     }
-    return output;
+    
+    s21_big_decimal tmp = s21_big_binary_division(value, s21_create_big_decimal(scale_table[count]), NULL);
+    if(!s21_equal_zero(tmp.decimal[1]) || tmp.decimal[0].bits[3] != 0) { count++;}
+  }
+  
+  return count;
 }
-
-
-s21_decimal s21_binary_addition(s21_decimal value_1, s21_decimal value_2){
-    s21_decimal result = value_1;
-    s21_decimal tmp = value_2;
-
-    while(!(s21_equal_zero(tmp))){
-        s21_decimal overflow = s21_binary_and(result, tmp);
-        overflow = s21_binary_shift_left(overflow);
-        result = s21_binary_xor(result, tmp);
-        tmp = overflow;
-    }
-
-    return result;
-}
-
-
-int s21_shift_for_correct_decimal(s21_decimal value){
-    int count = 0;
-    while(value.bits[3] != 0){
-        value = s21_binary_division(value, scale_table[1], NULL);
-        count++;
-    }
-    return count;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// void s21_decimal_equalization(s21_decimal value_1, s21_decimal value_2, s21_big_decimal *bvalue_1, s21_big_decimal *bvalue_2l, int scale_1, int scale_2){
-//     s21_decimal temp_1 = value_1;
-//     s21_decimal temp_2 = value_2;
-
-//     temp_1.bits[3] = temp_2.bits[3] = 0;
-
-//     if(scale_1 > scale_2){
-//         *bvalue_1 = s21_create_big_decimal_from_decimal(value_1);
-//         *bvalue_2 = 
-//     } else if (scale_1 < scale_2){
-
-//     } else {
-
-//     }
-// }
-
-// s21_big_decimal s21_create_big_decimal_from_decimal(s21_decimal value){
-//     s21_big_decimal big_decimal;
-//     for(int i = 0; i < 4; i++) big_decimal[i] = value[i];
-//     for(int i = 4; i < 8; i++) big_decimal[i] = 0;
-//     return big_decimal;
-// }
-
-// s21_big_decimal s21_something(s21_decimal value_1, s21_decimal value_2){
-//     s21_big_decimal big_decimal = s21_big_clear_decimal(big_decimal);
-//     s21_big_decimal big_decimal_temp = s21_create_big_decimal_from_decimal(value_1);
-
-//     int max_neaby_bit = s21_get_nearby_positive_bit(value_2);
-
-//     for(int i = 0; i < max_neaby_bit; i++){
-//         if (s21_get_bit(value_2)){
-
-//         }
-//     }
-// }
-
-// int s21_get_nearby_positive_bit(s21_decimal value){
-//     int result = -1;
-//     for(int i = 127; i >= 0; i--){
-//         if(s21_get_bit(value) == 1){
-//             result = i;
-//             break;
-//         }
-//     }
-//     return result;
-// }
-
-// s21_big_decimal s21_big_decimal_add_help(s21_big_decimal big_decimal_1, s21_big_decimal big_decimal_2){
-//     s21_big_decimal output = big_decimal_1;
-//     s21_big_decimal temp = big_decimal_2;
-
-//     while(!s21_big_equal_zero(temp)){
-//         s21_big_decimal help_bits;
-//         help_bits = s21_big_and_operation(output, temp);
-
-//         //shift_big_decimal ne zabud' i voobshe nado chto-to reshat' s opredeleniem big_decimal i ego vspomogatel'nimi
-//     }
-// }
-
-// int s21_big_equal_zero(s21_big_decimal big_decimal){
-//     int first_four_bits = big_decimal[0] && big_decimal[1] && big_decimal[2] && big_decimal[3];
-//     int last_four_bits = big_decimal[4] && big_decimal[5] && big_decimal[6] && big_decimal[7];
-//     return (first_four_bits || last_four_bits);
-// }
-
-// s21_big_decimal s21_big_and_operation(s21_big_decimal big_decimal_1, s21_big_decimal big_decimal_2){
-//     s21_big_decimal result = s21_big_clear_decimal(result);
-//     for(int i = 0; i < 7; i++) result[i] = big_decimal_1[i] & big_decimal_2[i];
-
-//     return result;
-// }

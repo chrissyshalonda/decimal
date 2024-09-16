@@ -1,8 +1,8 @@
 #ifndef S21_DECIMAL_H
 #define S21_DECIMAL_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #define POSITIVE_SIGN 0
 #define NEGATIVE_SIGN 1
@@ -11,16 +11,21 @@
 // Структуры
 //------------------------------------------------------------------------------
 
-typedef struct s21_decimal{
-    int bits[4];
+typedef struct s21_decimal {
+  int bits[4];
 } s21_decimal;
 
+typedef struct s21_big_decimal {
+  s21_decimal decimal[2];
+} s21_big_decimal;
+
+
 typedef enum ERRORS {
-    OK = 0,
-    TOO_BIG = 1,
-    TOO_SMALL = 2,
-    ZERO_DIVISION = 3,
-    UNEXEPTED_ERROR = 4
+  OK = 0,
+  TOO_BIG = 1,
+  TOO_SMALL = 2,
+  ZERO_DIVISION = 3,
+  UNEXEPTED_ERROR = 4
 } ERRORS;
 
 //------------------------------------------------------------------------------
@@ -41,7 +46,6 @@ int s21_mod(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 //      3 - деление на 0
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 // Операторы сравнение
 //------------------------------------------------------------------------------
@@ -53,13 +57,11 @@ int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2);
 int s21_is_equal(s21_decimal value_1, s21_decimal value_2);
 int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2);
 
-
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
 //      1 - число слишком велико или равно бесконечности
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 // Преобразователи
@@ -75,7 +77,6 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst);
 //      0 - OK
 //      1 - ошибка конвертации
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 // Другие функции
@@ -102,7 +103,7 @@ int s21_inverse_bit(s21_decimal *value, int bit_index);
 int s21_get_bit(s21_decimal value, int bit_index);
 
 void s21_print_bits(s21_decimal value);
-void s21_pretty_print_bits(s21_decimal value);
+void s21_pretty_print_bits(s21_decimal value, int index);
 
 int s21_set_scale(s21_decimal *value, int scale);
 int s21_get_scale(s21_decimal value);
@@ -110,21 +111,25 @@ int s21_get_scale(s21_decimal value);
 void s21_set_sign(s21_decimal *value, int sign);
 int s21_get_sign(s21_decimal value);
 
-
-
 //------------------------------------------------------------------------------
 // Общие функции
 //------------------------------------------------------------------------------
 
-s21_decimal* s21_create_decimal();
-void s21_free_decimal(s21_decimal* value);
+s21_decimal *s21_create_decimal();
+void s21_free_decimal(s21_decimal *value);
 s21_decimal s21_clear_decimal();
 s21_decimal s21_binary_shift_left(s21_decimal value);
 s21_decimal s21_binary_shift_right(s21_decimal value);
+s21_big_decimal s21_big_binary_shift_left(s21_big_decimal decimal);
+void s21_scale_rounding(s21_decimal *value_1, s21_decimal *value_2, int scale_1, int scale_2, s21_big_decimal *big_value_1, s21_big_decimal *big_value_2);
+s21_decimal s21_round_banking(s21_decimal value, s21_decimal part);
+s21_big_decimal s21_create_big_decimal(s21_decimal value);
+int s21_binary_compare(s21_decimal value_1, s21_decimal value_2);
+int s21_big_binary_compare(s21_big_decimal value_1, s21_big_decimal value_2);
+s21_big_decimal s21_big_binary_shift_right(s21_big_decimal decimal);
 
-
-static const s21_decimal scale_table[29] = {
-    [0] = {{0x1, 0x0, 0x0, 0x0}},
+static const s21_decimal scale_table[39] = {
+   [0] = {{0x1, 0x0, 0x0, 0x0}},
     [1] = {{0xA, 0x0, 0x0, 0x0}},
     [2] = {{0x64, 0x0, 0x0, 0x0}},
     [3] = {{0x3E8, 0x0, 0x0, 0x0}},
@@ -153,6 +158,16 @@ static const s21_decimal scale_table[29] = {
     [26] = {{0xE4000000, 0xDCC80CD2, 0x52B7D2, 0x0}},
     [27] = {{0xE8000000, 0x9FD0803C, 0x33B2E3C, 0x0}},
     [28] = {{0x10000000, 0x3E250261, 0x204FCE5E, 0x0}},
+    [29] = {{0xA0000000, 0x6D7217CA, 0x431E0FAE, 0x1}},
+    [30] = {{0x40000000, 0x4674EDEA, 0x9F2C9CD0, 0xC}},
+    [31] = {{0x80000000, 0xC0914B26, 0x37BE2022, 0x7E}},
+    [32] = {{0x0, 0x85ACEF81, 0x2D6D415B, 0x4EE}},
+    [33] = {{0x0, 0x38C15B0A, 0xC6448D93, 0x314D}},
+    [34] = {{0x0, 0x378D8E64, 0xBEAD87C0, 0x1ED09}},
+    [35] = {{0x0, 0x2B878FE8, 0x72C74D82, 0x134261}},
+    [36] = {{0x0, 0xB34B9F10, 0x7BC90715, 0xC097CE}},
+    [37] = {{0x0, 0xF436A0, 0xD5DA46D9, 0x785EE10}},
+    [38] = {{0x0, 0x98A2240, 0x5A86C47A, 0x4B3B4CA8}}
 };
 
 #endif

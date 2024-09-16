@@ -1,6 +1,6 @@
 #include "../s21_decimal.h"
 
 int s21_from_int_to_decimal(int src, s21_decimal *dst) {
-    // TODO: s21_from_int_to_decimal
-    return 0;
+  // TODO: s21_from_int_to_decimal
+  return 0;
 }

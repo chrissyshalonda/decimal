@@ -1,44 +1,36 @@
 #include "../s21_decimal.h"
 
-#define RESET   "\033[0m"
-#define RED     "\033[31m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define BLUE    "\033[34m"
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
 #define MAGENTA "\033[35m"
-#define BG_RED     "\033[41m"
-#define BG_GREEN   "\033[42m"
-#define BG_BLUE    "\033[44m"
+#define BG_RED "\033[41m"
+#define BG_GREEN "\033[42m"
+#define BG_BLUE "\033[44m"
 #define BG_MAGENTA "\033[45m"
-#define BG_WHITE   "\033[47m"
+#define BG_WHITE "\033[47m"
 
+int getRow(int bit_index) { return bit_index / 32; }
 
-int getRow(int bit_index) {
-    return bit_index / 32;
-}
-
-int getCol(int bit_index) {
-    return bit_index % 32;
-}
+int getCol(int bit_index) { return bit_index % 32; } 
 
 int s21_get_bit(s21_decimal value, int bit_index) {
-    return (value.bits[getRow(bit_index)] & (1 << getCol(bit_index))) != 0;
+  return (value.bits[getRow(bit_index)] & (1 << getCol(bit_index))) != 0;
 }
-
 
 void s21_print_bits(s21_decimal value) {
-    for(int i = 3; i >= 0; i--){
-        printf("bit[%d]: ", i);
-        for(int j = 31; j >= 0; j--)
-            printf("%d", s21_get_bit(value, i * 32 + j));
-        printf("\n");
-    }
+  for (int i = 3; i >= 0; i--) {
+    printf("bit[%d]: ", i);
+    for (int j = 31; j >= 0; j--) printf("%d", s21_get_bit(value, i * 32 + j));
+    printf("\n");
+  }
 }
 
-
-void s21_pretty_print_bits(s21_decimal value) {
+void s21_pretty_print_bits(s21_decimal value, int index) {
   char *number = malloc(200);
-  s21_from_decimal_to_string(value, number);
+  s21_from_decimal_to_string(value, number, index);
   printf("\nЗначение:" YELLOW " %s" RESET "\n", number);
   free(number);
 
@@ -78,34 +70,26 @@ void s21_pretty_print_bits(s21_decimal value) {
                     "означает отрицательный.\n\n\n");
 }
 
-
-
-int s21_set_bit(s21_decimal *value, int bit_index) {
-    bool result = bit_index >= 0 && bit_index < 128;
-    if(result)
-        value->bits[getRow(bit_index)] |= (1 << getCol(bit_index));
-    return result;
+int s21_set_bit(s21_decimal *value, int bit_index) { 
+  bool result = bit_index >= 0 && bit_index < 128;
+  if (result) value->bits[getRow(bit_index)] |= (1 << getCol(bit_index));
+  return result;
 }
 
 int s21_reset_bit(s21_decimal *value, int bit_index) {
-    bool result = bit_index >= 0 && bit_index < 128;
-    if(result)
-        value->bits[getRow(bit_index)] &= ~(1 << getCol(bit_index));
-    return !result;
+  bool result = bit_index >= 0 && bit_index < 128;
+  if (result) value->bits[getRow(bit_index)] &= ~(1 << getCol(bit_index));
+  return !result;
 }
 
 int s21_inverse_bit(s21_decimal *value, int bit_index) {
-    bool result = bit_index >= 0 && bit_index < 128;
-    if(result)
-        value->bits[getRow(bit_index)] ^= (1 << getCol(bit_index));
-    return !result;
+  bool result = bit_index >= 0 && bit_index < 128;
+  if (result) value->bits[getRow(bit_index)] ^= (1 << getCol(bit_index));
+  return !result;
 }
 
-
-
-
 #include <string.h>
-#define MAX_DIGITS 96  // Максимальное количество десятичных цифр
+#define MAX_DIGITS 111  // Максимальное количество десятичных цифр
 
 void add_strings(char *result, const char *num) {
   int carry = 0;
@@ -125,7 +109,7 @@ void double_string(char *num) {
   }
 }
 
-int s21_from_decimal_to_binary_string(s21_decimal value, char *binary) {
+int s21_from_decimal_to_binary_string(s21_decimal value, char *binary, int index) {
   // Переводим decimal в строку единиц и нулей
 
   if (s21_get_sign(value)) {
@@ -134,7 +118,7 @@ int s21_from_decimal_to_binary_string(s21_decimal value, char *binary) {
   }
 
   char *ptr = binary;
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < index; i++) {
     for (int j = 0; j < 32; j++) {
       *ptr++ = (value.bits[i] & (1u << j)) ? '1' : '0';
     }
@@ -154,9 +138,9 @@ int s21_from_decimal_to_binary_string(s21_decimal value, char *binary) {
   return s21_get_sign(value);
 }
 
-void s21_from_decimal_to_string(s21_decimal value, char *decimal) {
+void s21_from_decimal_to_string(s21_decimal value, char *decimal, int index) {
   char *binary = malloc(200);
-  int sign = s21_from_decimal_to_binary_string(value, binary);
+  int sign = s21_from_decimal_to_binary_string(value, binary, index);
   int scale = s21_get_scale(value);
 
   char result[MAX_DIGITS + 1] = {0};
@@ -184,11 +168,11 @@ void s21_from_decimal_to_string(s21_decimal value, char *decimal) {
     strncpy(decimal, &result[start], len - scale);
     decimal[len - scale] = '.';
     strcpy(decimal + len - scale + 1, &result[start + len - scale]);
-  }  else if (scale >= len) {
+  } else if (scale >= len) {
     strcpy(decimal, "0.");
-    for (int i = 0; i < scale - len; i++) {
-      strcat(decimal, "0");
-    }
+    // for (int i = 0; i < scale - len; i++) {
+    //   strcat(decimal, "0");
+    // }
     strcat(decimal, &result[start]);
   } else {
     strcpy(decimal, &result[start]);
