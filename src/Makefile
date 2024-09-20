@@ -13,7 +13,7 @@ else
 	CHECK_FLAGS = -lcheck -I tests -L tests
 endif
 
-ENTRY_POINTS := $(shell grep -r -l  "int main" --exclude Makefile)
+ENTRY_POINTS := $(shell grep -r -l  "int main" . --exclude Makefile)
 ENTRY_POINTS_OBJ := $(ENTRY_POINTS:.c=.o)
 SOURCES := $(filter-out $(ENTRY_POINTS), $(shell find . -name '*.c' ! -path "./tests/*"))
 OBJECTS := $(SOURCES:.c=.o)
@@ -27,9 +27,9 @@ GCOV_FILES := $(shell find . -name '*.gcda' ) $(shell find . -name '*.gcno') $(s
 SOURCES := $(shell find . -name '*.c')
 OBJECTS := $(SOURCES:.c=.o)
 
-# test: s21_decimal.a $(TEST_OBJECTS)
-# 	$(CC) $(FLAGS) s21_decimal.a $(TEST_OBJECTS)  -o test.out $(CHECK_FLAGS) 
-# 	./test.out
+test: s21_decimal.a $(TEST_OBJECTS)
+	$(CC) $(FLAGS) s21_decimal.a $(TEST_OBJECTS)  -o test.out $(CHECK_FLAGS) 
+	./test.out
 
 main: $(OBJECTS)
 	$(CC) $(FLAGS) s21_decimal.a $(TEST_OBJECTS)  -o test.out $(CHECK_FLAGS) 
@@ -49,6 +49,7 @@ s21_decimal.a: $(OBJECTS)
 
 clean:
 	rm -f $(OBJECTS) 
+	rm -f $(GCOV_FILES)
 	rm -rf *.dSYM
 	rm -f main.out
 

@@ -10,29 +10,63 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   } else if (s21_equal_zero(value_2)) {
     code = ZERO_DIVISION;
   } else {
-    *result = s21_clear_decimal(*result);
-    s21_div_processing(value_1, value_2, &result);
+    *result = s21_clear_decimal();
+    int sign1 = s21_get_sign(value_1);
+    int sign2 = s21_get_sign(value_2);
+    int scale_1 = s21_get_scale(value_1);
+    int scale_2 = s21_get_scale(value_2);
+
+    s21_big_decimal big_value_1;
+    s21_big_decimal big_value_2;
+
+    s21_scale_rounding(&value_1, &value_2, scale_1, scale_2, &big_value_1, &big_value_2);
+
+    s21_big_decimal remainder = s21_create_big_decimal(s21_clear_decimal());
+    s21_big_decimal big_result = s21_create_big_decimal(s21_clear_decimal());
+
+    big_result = s21_big_binary_division(value_1, value_2, &remainder);
+
+    if(big_result.decimal[0].bits[3] != 0 || !s21_equal_zero(big_result.decimal[1])){
+      code = TOO_BIG;
+      if(sign1 != sign2){
+        code = TOO_SMALL;
+      }
+    } else {
+      code = s21_div_processing()
+    }
   }
   return code;
 }
 
-int s21_div_processing(s21_decimal value_1, s21_decimal value_2,
-                       s21_decimal *result) {
-  int sign1 = s21_get_sign(value_1);
-  int sign2 = s21_get_sign(value_2);
+int s21_div_processing(s21_big_decimal divider, s21_big_decimal big_result,
+                       s21_big_decimal remainder, s21_decimal *result) {
+  code = OK;
 
-  int scale_1 = s21_get_scale(value_1);
-  int scale_2 = s21_get_scale(value_2);
-  value_1.bits[3] = value_2.bits[3] = 0;
+  int 
+}
 
-  //s21_scale_rounding(&value_1, &value_2, scale_1, scale_2);
-  s21_decimal remainder = s21_clear_decimal();
-  *result = s21_binary_division(value_1, value_2, &remainder);
+int s21_calculation_scale(s21_big_decimal *result, s21_big_decimal big_value_2, s21_big_decimal *remainder){
+  int scale = 0;
+  s21_big_decimal value = *result;
 
-  //scale_1 = s21_help_with_remainder(&result, value_2, &remainder);
-  s21_set_scale(&remainder, scale_1);
-  *result = s21_binary_addition(*result, remainder);
-  return 0;
+  s21_big_decimal tmp = s21_create_big_decimal(s21_clear_decimal());
+  s21_big_decimal tmp_remainder = *remainder;
+
+  while(scale < 28){
+    s21_big_decimal save_value = value;
+    s21_big_decimal save_remainder = tmp_remainder;
+
+    value = s21_mul_processing(number, scale_table[1]);
+    tmp_remainder = s21_mul_processing(tmp_remainder, scale_table[1]);
+
+    tmp = s21_big_binary_division(tmp_remainder, big_value_2, &tmp_remainder);
+    value = s21_big_binary_addition(value, tmp);
+
+    if(!s21_not_correct(value.decimal[0])){
+      value = save_value;
+      tmp_remainder = save_remainder;
+    }
+  }
 }
 
 s21_decimal s21_binary_division(s21_decimal value_1, s21_decimal value_2,
@@ -44,7 +78,7 @@ s21_decimal s21_binary_division(s21_decimal value_1, s21_decimal value_2,
   if (s21_equal_zero(value_1)) {
     quotient = s21_clear_decimal();
     remainder_of_divison = s21_clear_decimal();
-  } else if (0) {
+  } else if (s21_binary_compare(value_1, value_2) == -1) {
     quotient = s21_clear_decimal();
     remainder_of_divison = value_1;
   } else {

@@ -14,7 +14,7 @@
 
 int getRow(int bit_index) { return bit_index / 32; }
 
-int getCol(int bit_index) { return bit_index % 32; } 
+int getCol(int bit_index) { return bit_index % 32; }
 
 int s21_get_bit(s21_decimal value, int bit_index) {
   return (value.bits[getRow(bit_index)] & (1 << getCol(bit_index))) != 0;
@@ -70,7 +70,7 @@ void s21_pretty_print_bits(s21_decimal value, int index) {
                     "означает отрицательный.\n\n\n");
 }
 
-int s21_set_bit(s21_decimal *value, int bit_index) { 
+int s21_set_bit(s21_decimal *value, int bit_index) {
   bool result = bit_index >= 0 && bit_index < 128;
   if (result) value->bits[getRow(bit_index)] |= (1 << getCol(bit_index));
   return result;
@@ -109,7 +109,8 @@ void double_string(char *num) {
   }
 }
 
-int s21_from_decimal_to_binary_string(s21_decimal value, char *binary, int index) {
+int s21_from_decimal_to_binary_string(s21_decimal value, char *binary,
+                                      int index) {
   // Переводим decimal в строку единиц и нулей
 
   if (s21_get_sign(value)) {

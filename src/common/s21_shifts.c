@@ -58,31 +58,30 @@ s21_decimal s21_binary_shift_right(s21_decimal value) {
   return result;
 }
 
-
 s21_big_decimal s21_big_binary_shift_left(s21_big_decimal decimal) {
-    s21_big_decimal result = decimal;
-    int last = s21_get_bit(result.decimal[0], 127);
+  s21_big_decimal result = decimal;
+  int last = s21_get_bit(result.decimal[0], 127);
 
-    result.decimal[0] = s21_binary_shift_left(result.decimal[0]);
-    result.decimal[1] = s21_binary_shift_left(result.decimal[1]);
+  result.decimal[0] = s21_binary_shift_left(result.decimal[0]);
+  result.decimal[1] = s21_binary_shift_left(result.decimal[1]);
 
-    if (last) {
-      s21_set_bit(&result.decimal[1], 0);
-    }
+  if (last) {
+    s21_set_bit(&result.decimal[1], 0);
+  }
 
-    return result;
+  return result;
 }
 
 s21_big_decimal s21_big_binary_shift_right(s21_big_decimal decimal) {
-    s21_big_decimal result = decimal;
-    int last = s21_get_bit(result.decimal[1], 0);
+  s21_big_decimal result = decimal;
+  int last = s21_get_bit(result.decimal[1], 0);
 
-    result.decimal[0] = s21_binary_shift_right(result.decimal[0]);
-    result.decimal[1] = s21_binary_shift_right(result.decimal[1]);
+  result.decimal[0] = s21_binary_shift_right(result.decimal[0]);
+  result.decimal[1] = s21_binary_shift_right(result.decimal[1]);
 
-    if (last) {
-      s21_set_bit(&result.decimal[0], 127);
-    }
+  if (last) {
+    s21_set_bit(&result.decimal[0], 127);
+  }
 
-    return result;
+  return result;
 }

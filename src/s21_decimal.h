@@ -122,6 +122,7 @@ s21_decimal s21_binary_shift_left(s21_decimal value);
 s21_decimal s21_binary_shift_right(s21_decimal value);
 s21_big_decimal s21_big_binary_shift_left(s21_big_decimal decimal);
 void s21_scale_rounding(s21_decimal *value_1, s21_decimal *value_2, int scale_1, int scale_2, s21_big_decimal *big_value_1, s21_big_decimal *big_value_2);
+void s21_from_decimal_to_string(s21_decimal value, char *decimal, int index);
 s21_decimal s21_round_banking(s21_decimal value, s21_decimal part);
 s21_big_decimal s21_create_big_decimal(s21_decimal value);
 int s21_binary_compare(s21_decimal value_1, s21_decimal value_2);
