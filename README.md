@@ -1,5 +1,5 @@
 # s21_decimal 
-# git@github.com:chrissyshalonda
+# git@github.com:chrissyshalonda (По мотивам Hubert Furr (hubertfu@student.21-school.ru)) очень помог мне в освоении этого проекта
 > При старте работы над проектом просим вас постараться хронометрировать время работы над проектом.
 > По завершении работы над проектом просим вас ответить на два вопроса [в этом опросе](https://forms.gle/PFAxFfM4GJuQU1x59)
 
