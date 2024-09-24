@@ -2,7 +2,7 @@
 #include "s21_arithmetic.h"
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  ERRORS code = OK;
+  int code = OK;
 
   if (!result) {
     code = UNEXEPTED_ERROR;
@@ -14,13 +14,15 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       code = s21_add_processing(value_1, value_2, result);
     } else if (sign1 == POSITIVE_SIGN && sign2 == NEGATIVE_SIGN) {
       s21_set_sign(&value_2, 0);
-      code = s21_add_processing(value_1, value_2, result);
+      code = s21_sub(value_1, value_2, result);
     } else if (sign1 == NEGATIVE_SIGN && sign2 == POSITIVE_SIGN) {
       s21_set_sign(&value_1, 0);
-      code = s21_sub_processing(value_1, value_2, result);
+      code = s21_sub(value_1, value_2, result);
       s21_negate(*result, result);
     } else if (sign1 == NEGATIVE_SIGN && sign2 == NEGATIVE_SIGN) {
-      code = s21_sub_processing(value_1, value_2, result);
+      s21_set_sign(&value_1, 0);
+      s21_set_sign(&value_2, 0);
+      code = s21_add_processing(value_1, value_2, result);
       s21_negate(*result, result);
     }
 
@@ -47,7 +49,6 @@ int s21_add_processing(s21_decimal value_1, s21_decimal value_2,
                      &big_value_2);
   s21_big_decimal big_result =
       s21_big_binary_addition(big_value_1, big_value_2);
-
   int needed_shift = s21_shift_for_correct_decimal(big_result);
   int final_scale = max_scale - needed_shift;
 

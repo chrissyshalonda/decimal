@@ -11,7 +11,7 @@ s21_decimal s21_round_banking(s21_decimal value, s21_decimal part) {
     if (s21_get_bit(value, 0) == 0) {
       result = value;
     } else {
-      result = s21_binary_addition(value, onehalf);
+      result = s21_binary_addition(value, one);
     }
   } else if (s21_is_greater(part, onehalf)) {
     result = s21_binary_addition(value, one);

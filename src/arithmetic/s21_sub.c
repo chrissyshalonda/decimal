@@ -9,29 +9,32 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   } else {
     int sign1 = s21_get_sign(value_1);
     int sign2 = s21_get_sign(value_2);
-
     if (sign1 == POSITIVE_SIGN && sign2 == POSITIVE_SIGN) {
       if (s21_is_greater_or_equal(value_1, value_2)) {
-        s21_sub_processing(value_1, value_2, result);
+        code = s21_sub_processing(value_1, value_2, result);
       } else {
-        s21_sub_processing(value_2, value_1, result);
+        code = s21_sub_processing(value_2, value_1, result);
         s21_negate(*result, result);
       }
     } else if (sign1 == POSITIVE_SIGN && sign2 == NEGATIVE_SIGN) {
       s21_set_sign(&value_2, 0);
-      s21_add_processing(value_1, value_2, result);
+      code = s21_add(value_1, value_2, result);
     } else if (sign1 == NEGATIVE_SIGN && sign2 == POSITIVE_SIGN) {
       s21_set_sign(&value_1, 0);
-      s21_add_processing(value_1, value_2, result);
+      code = s21_add(value_1, value_2, result);
       s21_negate(*result, result);
     } else if (sign1 == NEGATIVE_SIGN && sign2 == NEGATIVE_SIGN) {
       if (s21_is_greater_or_equal(value_1, value_2)) {
-        s21_sub_processing(value_2, value_1, result);
+        code = s21_sub_processing(value_2, value_1, result);
       } else {
-        s21_sub_processing(value_1, value_2, result);
+        code = s21_sub_processing(value_1, value_2, result);
         s21_negate(*result, result);
       }
     }
+  }
+
+  if (s21_get_sign(*result) == NEGATIVE_SIGN && code == TOO_BIG) {
+    code = TOO_SMALL;
   }
   return code;
 }
@@ -53,6 +56,7 @@ int s21_sub_processing(s21_decimal value_1, s21_decimal value_2,
 
   s21_scale_rounding(&value_1, &value_2, scale_1, scale_2, &big_value_1,
                      &big_value_2);
+
   s21_big_decimal big_result =
       s21_big_binary_subtraction(big_value_1, big_value_2);
 
@@ -71,7 +75,9 @@ int s21_sub_processing(s21_decimal value_1, s21_decimal value_2,
 
     big_result.decimal[0] =
         s21_round_banking(big_result.decimal[0], remainder.decimal[0]);
+
     s21_set_scale(&big_result.decimal[0], final_scale);
+
     *result = big_result.decimal[0];
   }
 

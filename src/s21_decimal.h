@@ -4,11 +4,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+
 #define POSITIVE_SIGN 0
 #define NEGATIVE_SIGN 1
 
 //------------------------------------------------------------------------------
-// Структуры 
+// Структуры
 //------------------------------------------------------------------------------
 
 typedef struct s21_decimal {
@@ -18,7 +19,6 @@ typedef struct s21_decimal {
 typedef struct s21_big_decimal {
   s21_decimal decimal[2];
 } s21_big_decimal;
-
 
 typedef enum ERRORS {
   OK = 0,
@@ -72,6 +72,11 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst);
 int s21_from_decimal_to_int(s21_decimal src, int *dst);
 int s21_from_decimal_to_float(s21_decimal src, float *dst);
 
+// ----------------------------------------
+s21_decimal s21_get_switch(char c);
+s21_decimal s21_ftd_helper(char *float_c);
+// ----------------------------------------
+
 //------------------------------------------------------------------------------
 //      Функции возвращают код ошибки:
 //      0 - OK
@@ -121,7 +126,9 @@ s21_decimal s21_clear_decimal();
 s21_decimal s21_binary_shift_left(s21_decimal value);
 s21_decimal s21_binary_shift_right(s21_decimal value);
 s21_big_decimal s21_big_binary_shift_left(s21_big_decimal decimal);
-void s21_scale_rounding(s21_decimal *value_1, s21_decimal *value_2, int scale_1, int scale_2, s21_big_decimal *big_value_1, s21_big_decimal *big_value_2);
+void s21_scale_rounding(s21_decimal *value_1, s21_decimal *value_2, int scale_1,
+                        int scale_2, s21_big_decimal *big_value_1,
+                        s21_big_decimal *big_value_2);
 void s21_from_decimal_to_string(s21_decimal value, char *decimal, int index);
 s21_decimal s21_round_banking(s21_decimal value, s21_decimal part);
 s21_big_decimal s21_create_big_decimal(s21_decimal value);
@@ -130,7 +137,7 @@ int s21_big_binary_compare(s21_big_decimal value_1, s21_big_decimal value_2);
 s21_big_decimal s21_big_binary_shift_right(s21_big_decimal decimal);
 
 static const s21_decimal scale_table[39] = {
-   [0] = {{0x1, 0x0, 0x0, 0x0}},
+    [0] = {{0x1, 0x0, 0x0, 0x0}},
     [1] = {{0xA, 0x0, 0x0, 0x0}},
     [2] = {{0x64, 0x0, 0x0, 0x0}},
     [3] = {{0x3E8, 0x0, 0x0, 0x0}},
@@ -168,7 +175,6 @@ static const s21_decimal scale_table[39] = {
     [35] = {{0x0, 0x2B878FE8, 0x72C74D82, 0x134261}},
     [36] = {{0x0, 0xB34B9F10, 0x7BC90715, 0xC097CE}},
     [37] = {{0x0, 0xF436A0, 0xD5DA46D9, 0x785EE10}},
-    [38] = {{0x0, 0x98A2240, 0x5A86C47A, 0x4B3B4CA8}}
-};
+    [38] = {{0x0, 0x98A2240, 0x5A86C47A, 0x4B3B4CA8}}};
 
 #endif

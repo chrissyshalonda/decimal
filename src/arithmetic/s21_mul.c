@@ -39,7 +39,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       code = s21_mul_helper(value_1, value_2, result);
     }
 
-    if (code == TOO_SMALL && s21_get_sign(*result)) {
+    if (code == TOO_BIG && s21_get_sign(*result)) {
       code = TOO_SMALL;
     }
   }
@@ -87,6 +87,7 @@ int s21_mul_helper(s21_decimal value_1, s21_decimal value_2,
         s21_create_big_decimal(scale_table[needed_shift]);
 
     big_result = s21_big_binary_division(big_result, ten_scale, &remainder);
+    s21_set_scale(&remainder.decimal[0], needed_shift);
 
     big_result.decimal[0] =
         s21_round_banking(big_result.decimal[0], remainder.decimal[0]);
@@ -99,6 +100,8 @@ int s21_mul_helper(s21_decimal value_1, s21_decimal value_2,
       *result = big_result.decimal[0];
     }
   }
+
+  return code;
 }
 
 s21_big_decimal s21_mul_processing(s21_decimal value_1, s21_decimal value_2) {
@@ -109,6 +112,23 @@ s21_big_decimal s21_mul_processing(s21_decimal value_1, s21_decimal value_2) {
 
   for (int i = 0; i <= max_bit; i++) {
     if (s21_get_bit(value_2, i)) {
+      result = s21_big_binary_addition(result, tmp);
+    }
+    tmp = s21_big_binary_shift_left(tmp);
+  }
+
+  return result;
+}
+
+s21_big_decimal s21_big_mul_processing(s21_big_decimal big_value_1,
+                                       s21_decimal value_2) {
+  s21_big_decimal result = s21_create_big_decimal(s21_clear_decimal());
+  s21_big_decimal tmp = big_value_1;
+
+  int max_bit = s21_max_not_null_bit(value_2);
+
+  for (int i = 0; i <= max_bit; i++) {
+    if (s21_get_bit(value_2, i) != 0) {
       result = s21_big_binary_addition(result, tmp);
     }
     tmp = s21_big_binary_shift_left(tmp);
